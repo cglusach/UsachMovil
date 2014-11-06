@@ -1,0 +1,22 @@
+{
+  "version": "0.1",
+  "name": "Usach Movil",
+  "description": "Aplicación para los usachinos",
+  "launch_path": "/www/index.html",
+  "icons": {
+    "128": "/www/img/ionic.png"
+  },
+  "developer": {
+    "name": "CGL Usach",
+    "url": "http://sitios.diinf.usach.cl/cgl"
+  },
+  "locales": {
+    "es": {
+      "description": "Aplicación que en esta primera etapa permite encontrar las salas de la USACH",
+      "developer": {
+        "url": "http://sitios.diinf.usach.cl/cgl"
+      }
+    },
+    "default_locale": "es"
+  }
+}
