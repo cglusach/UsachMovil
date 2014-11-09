@@ -1,5 +1,20 @@
-<ion-view title="Playlist">
-  <ion-content class="has-header">
-    <h1>Playlist</h1>
+<div class="modal">
+  <ion-header-bar>
+    <h1 class="title">Buscar Salas</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeLogin()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="doLogin()">
+      <div class="list">
+        <label class="item item-input">
+          <input type="text" placeholder="Sala 518, piscina, laboratorio... ">
+        </label>
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">Buscar</button>
+        </label>
+      </div>
+    </form>
   </ion-content>
-</ion-view>
+</div>
