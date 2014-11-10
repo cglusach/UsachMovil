@@ -47,6 +47,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
+    
+    .state('app.inicio', {
+      url: "/inicio",
+      views: {
+        'menuContent' :{
+          templateUrl: "app/inicio.html"
+        }
+      }
+    })
 
     .state('app.opciones', {
       url: "/opciones",
@@ -56,6 +65,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
+    
+    .state('app.acercade', {
+      url: "/acercade",
+      views: {
+        'menuContent' :{
+          templateUrl: "app/acercade.html"
+        }
+      }
+    })
+    
     .state('app.playlists', {
       url: "/playlists",
       views: {
