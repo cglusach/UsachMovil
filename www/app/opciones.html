@@ -1,18 +1,21 @@
 <ion-view title="Opciones">
 	
   <ion-nav-buttons side="left">
-    <button menu-toggle="left"class="button button-icon icon ion-navicon"></button>
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   
   <ion-content class="has-header">
-    <ion-item nav-clear menu-close href="#/app/search">
-		Estilo de mapa
-    </ion-item>
-    <ion-item nav-clear menu-close href="#/app/search">
-		Perfil
-    </ion-item>
-    <ion-item nav-clear menu-close href="#/app/search">
-		Avanzadas
-    </ion-item>
-  </ion-content>
+	<h4 align="center">Sitio de donde se extraen los datos</h4>
+		
+	<div class="item-input-inset">
+		<label class="item-input-wrapper">
+			<input type="text" placeholder="Insertar sitio">
+		</label>
+	</div>
+		<center>
+			<button class="button button-small button-positive">
+				Aplicar
+			</button>
+		</center>
+	</ion-content>
 </ion-view>
