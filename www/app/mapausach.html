@@ -1,9 +1,9 @@
-<ion-view title="Salas USACH">
+<ion-view title="Salas USACH" ng-controller="MapController">
   <ion-nav-buttons side="left">
     <!-- <button menu-toggle="left" class="button button-icon icon ion-navicon"></button> -->
   </ion-nav-buttons>
   
-	<ion-content ng-controller="MapController" class="has-header">
-		<div id="map" data-tap-disabled="true"></div>
+	<ion-content class="has-header" ng-init="init()">
+		<div id="mapa" data-tap-disabled="true"></div>
 	</ion-content>
 </ion-view>
