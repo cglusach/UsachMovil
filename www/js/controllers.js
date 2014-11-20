@@ -44,6 +44,9 @@ angular.module('starter.controllers', [])
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
+.controller('MapCtrl', function($scope) {
+})
+
 .controller('MapController', function($scope, $ionicLoading, $compile) {
     $scope.init = function() {
         var myLatlng = new google.maps.LatLng(-33.4489056, -70.6819047);

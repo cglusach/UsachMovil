@@ -1,17 +1,17 @@
 <ion-view title="Salas USACH">
   <ion-nav-buttons side="left">
-    <!--<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>-->
+     <!-- <button menu-toggle="left" class="button button-icon icon ion-navicon"></button> -->
   </ion-nav-buttons>
   
 	<ion-content class="has-header">
-		<form action="#/app/mapausach">
+		<form>
 			<div class="list">
 				<label class="item item-input item-stacked-label">
 					<span class="input-label">Nombre de la sala a buscar</span>
 					<input id="sala" type="text" placeholder="Sala 518, piscina, laboratorio...">
 				</label>
 				<label class="item">
-					  <button class="button button-block button-positive" type="submit">Buscar</button>
+					  <button class="button button-block button-positive" type="submit" ui-sref="app.mapausach">Buscar</button>
 				</label>
 			</div>
 		</form>
