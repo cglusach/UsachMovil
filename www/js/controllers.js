@@ -47,6 +47,42 @@ angular.module('starter.controllers', [])
 .controller('MapCtrl', function($scope) {
 })
 
+.controller('GETController', function($scope, $http) {
+	$scope.model = {};
+	$scope.model.base = "https://salasusach.herokuapp.com/";
+    $scope.getData = function() {
+	
+      //URLs
+	  $scope.model.url = $scope.model.base + "coordenada/buscar/" +  $scope.model.code;
+	  $scope.model.url2 = $scope.model.base + "lugar/buscar/" +  $scope.model.code;
+	  $http.get($scope.model.url2).then(function(resp) {
+		  $scope.model.instance = resp.data.instance;
+          //Si existe la sala o lugar entonces asignamos su latitud y longitud, en caso contrario dejamos vacios los campos
+		  if($scope.model.instance == 'Just')
+		  {
+			$http.get($scope.model.url).then(function(resp) {
+			$scope.estado = "Existe lugar"
+			$scope.latitud = resp.data.slot1.latitud;
+			$scope.longitud = resp.data.slot1.longitud;
+			}, function(err) {
+			console.error('ERR', err);
+			// err.status will contain the status code
+		   })  
+		  }
+		  else
+		  {
+			$scope.estado = "No existe lugar"
+			$scope.latitud = "";
+			$scope.longitud = "";
+		  }
+	  }, function(err) {
+		console.error('ERR', err);
+		// err.status will contain the status code
+	   })
+	   
+	}
+})
+
 .controller('MapController', function($scope, $ionicLoading, $compile) {
     $scope.init = function() {
         var myLatlng = new google.maps.LatLng(-33.4489056, -70.6819047);
