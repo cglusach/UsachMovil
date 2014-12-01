@@ -41,7 +41,18 @@ angular.module('starter.controllers', [])
   ];
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('buscarController', function($scope, $http, $state, GETservice) {
+	$scope.model = {};
+    $scope.getData = function() {
+		$scope.estado = "";
+		GETservice.getData($scope.model.lugar).then(function(dato){
+			if(!dato){
+				$scope.estado = "No existe el lugar";
+				return;
+			}
+			$state.go('app.mapausach', {lat: dato.latitud, long: dato.longitud});
+		});
+	}
 })
 
 .controller('MapCtrl', function($scope) {
@@ -74,9 +85,9 @@ angular.module('starter.controllers', [])
 	}
 })
 
-.controller('MapController', function($scope, $ionicLoading, $compile) {
+.controller('MapController', function($scope, $stateParams, $ionicLoading, $compile) {
     $scope.init = function() {
-        var myLatlng = new google.maps.LatLng(-33.4489056, -70.6819047);
+        var myLatlng = new google.maps.LatLng(parseFloat($stateParams.lat), parseFloat($stateParams.long));
 
         var mapOptions = {
 			center: myLatlng,

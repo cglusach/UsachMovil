@@ -22,7 +22,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-  
+	
 	.state('app.inicio', {
       url: "/inicio",
       views: {
@@ -49,21 +49,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
+
+    .state('app.mapausach', {
+        url: "/mapausach/:lat,:long",
+      views: {
+        'menuContent' :{
+          templateUrl: "app/mapausach.html"
+        }
+      }
+    })
     
     .state('app.buscarsala', {
       url: "/buscarsala",
       views: {
         'menuContent' :{
           templateUrl: "app/buscarsala.html"
-        }
-      }
-    })
-    
-    .state('app.mapausach', {
-      url: "/mapausach",
-      views: {
-        'menuContent' :{
-          templateUrl: "app/mapausach.html"
         }
       }
     })
