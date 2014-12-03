@@ -19,14 +19,14 @@ angular.module('starter.services', [])
 		      //La primera busqueda asegura que exista el lugar
 			  return $http.get(url2).then(function(resp) {
 				  //Si en la primera busqueda obtenemos un dato valido, asignamos su piso, tipo y nombre del lugar
-				  if(resp.data.instance != 'Nothing')
+				  if(resp.data.instance != "Nothing")
 				  {
 					  dato.piso = resp.data.slot1.piso;
 					  dato.tipo = resp.data.slot1.tipo;
 					  dato.nombre = resp.data.slot1.nombre;
 				  }
 				  //Si existe la sala o lugar entonces asignamos su latitud y longitud, en caso contrario dejamos vacios los campos
-				  if(resp.data.instance == 'Just')
+				  if(resp.data.instance == "Just")
 				  {
 						return $http.get(url).then(function(resp) {
 						dato.latitud = resp.data.slot1.latitud;

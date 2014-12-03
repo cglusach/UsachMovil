@@ -34,29 +34,32 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('PlaylistsCtrl', function($scope) {
+/* .controller('PlaylistsCtrl', function($scope) {
   $scope.playlists = [
     { title: 'Buscar sala', id: 1 },
     { title: 'Créditos', id: 2 }
   ];
-})
+}) */
 
 .controller('buscarController', function($scope, $http, $state, GETservice) {
 	$scope.model = {};
     $scope.getData = function() {
 		$scope.estado = "";
 		GETservice.getData($scope.model.lugar).then(function(dato){
-			if(!dato){
+			if (!dato) {
 				$scope.estado = "No existe el lugar";
 				return;
 			}
-			$state.go('app.mapausach', {lat: dato.latitud, long: dato.longitud});
+			else {
+				$scope.estado = "Lugar encontrado";
+				$state.go('app.mapausach', {lat: dato.latitud, long: dato.longitud});
+			}
 		});
 	}
 })
 
-.controller('MapCtrl', function($scope) {
-})
+/* .controller('MapCtrl', function($scope) {
+}) */
 
 .controller('GETController', function($scope, $http, GETservice) {
 	$scope.model = {};
@@ -85,20 +88,19 @@ angular.module('starter.controllers', [])
 	}
 })
 
-.controller('MapController', function($scope, $stateParams, $ionicLoading, $compile) {
+.controller('MapController', function($scope, $stateParams, $ionicLoading, $ionicSideMenuDelegate, $compile) {
     $scope.init = function() {
         var myLatlng = new google.maps.LatLng(parseFloat($stateParams.lat), parseFloat($stateParams.long));
 
         var mapOptions = {
 			center: myLatlng,
-			zoom: 16,
+			zoom: 17,
 			mapTypeId: google.maps.MapTypeId.HYBRID,
 			zoomControl:false,
 			streetViewControl: false,
 			panControl:false
         };
-        var map = new google.maps.Map(document.getElementById("mapa"),
-            mapOptions);
+        var map = new google.maps.Map(document.getElementById("mapa"), mapOptions);
 
         //Marker + infowindow + angularjs compiled ng-click
         var contentString = "<div><a ng-click='clickTest()'>Click me!</a></div>";
@@ -117,7 +119,12 @@ angular.module('starter.controllers', [])
         google.maps.event.addListener(marker, 'click', function() {
           infowindow.open(map,marker);
         });
-
+        
+        $scope.lat = $stateParams.lat;
+        $scope.long = $stateParams.long;
+        $scope.nombre = $stateParams.nombre;
+        $scope.piso = $stateParams.piso;
+        $scope.tipo = $stateParams.tipo;
         $scope.map = map;
     };
 
@@ -144,4 +151,8 @@ angular.module('starter.controllers', [])
     $scope.clickTest = function() {
         alert('Example of infowindow with ng-click')
     };
+    
+    $scope.toggleRight = function() {
+		$ionicSideMenuDelegate.toggleRight();
+	};
 });

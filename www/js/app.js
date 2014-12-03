@@ -81,7 +81,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       abstract: true,
       templateUrl: "templates/menu.html",
       controller: 'AppCtrl'
-    });
+    })
+    
+    /*.state('app.mapadatos', {
+      url: "/app",
+      abstract: true,
+      templateUrl: "app/mapausach_datos.html",
+      controller: 'AppCtrl'
+    })*/;
 
     /*
     .state('app.search', {

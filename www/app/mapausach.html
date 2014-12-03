@@ -1,9 +1,38 @@
 <ion-view title="Salas USACH" ng-controller="MapController">
-  <ion-nav-buttons side="left">
-    <!-- <button menu-toggle="left" class="button button-icon icon ion-navicon"></button> -->
-  </ion-nav-buttons>
-  
-	<ion-content class="has-header" ng-init="init()">
-		<div id="mapa" data-tap-disabled="true"></div>
-	</ion-content>
+	<ion-side-menus>
+		<ion-side-menu-content>
+			<ion-nav-buttons side="right">
+				<button class="button button-icon icon ion-navigate" ng-click="toggleRight()">
+				</button>
+			</ion-nav-buttons>
+			<ion-nav-view name="appContent" class="has-header" ng-init="init()">
+				<div id="mapa" data-tap-disabled="true"></div>
+			</ion-nav-view>
+		</ion-side-menu-content> 
+
+		<ion-side-menu side="right">
+			<ion-header-bar class="bar-assertive">
+			<h1 class="title">Datos del Lugar</h1>
+			</ion-header-bar>
+			<ion-content class="has-header" ng-init="init()">
+				<div class="list">
+					<label class="item item-stacked-label">
+						<span>Nombre</span> {{nombre}}
+					</label>
+					<label class="item item-stacked-label">
+						<span>Latitud</span> {{lat}}
+					</label>
+					<label class="item item-stacked-label">
+						<span>Longitud</span> {{long}}
+					</label>
+					<label class="item item-stacked-label">
+						<span>Piso</span> {{piso}}
+					</label>
+					<label class="item item-stacked-label">
+						<span>Tipo</span> {{tipo}}
+					</label>
+				</div>
+			</ion-content>
+		</ion-side-menu>
+	</ion-side-menus>
 </ion-view>
