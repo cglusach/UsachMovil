@@ -10,6 +10,8 @@ angular.module('starter.services', [])
 	  longitud:''
 	};
 	var urlBase = "https://salasusach.herokuapp.com/";
+	//por defecto
+	var periodo = '2014-02';
 	return {
 		    //creamos una funcion la cual entra la variable "lugar" (con la sala o lugar) y retorna un dato, si es que existe en la DB
 			getData: function(lugar) {
@@ -54,6 +56,15 @@ angular.module('starter.services', [])
 					return null;
 					// err.status will contain the status code
 			   })
+			},
+			getDetalles: function() {
+				return dato;
+			},
+			setPeriodo: function(per) {
+				periodo = per;
+			},
+			getPeriodo: function() {
+				return periodo;
 			}
 	}
 });

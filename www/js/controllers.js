@@ -88,10 +88,10 @@ angular.module('starter.controllers', [])
 	}
 })
 
-.controller('MapController', function($scope, $stateParams, $ionicLoading, $ionicSideMenuDelegate, $compile) {
+.controller('MapController', function($scope, $stateParams, GETservice, $ionicLoading, $ionicSideMenuDelegate, $compile) {
     $scope.init = function() {
+		$scope.model = {};
         var myLatlng = new google.maps.LatLng(parseFloat($stateParams.lat), parseFloat($stateParams.long));
-
         var mapOptions = {
 			center: myLatlng,
 			zoom: 17,
@@ -116,15 +116,14 @@ angular.module('starter.controllers', [])
           title: 'USACH'
         });
 
+		$scope.model = GETservice.getDetalles();
+		$scope.model.periodo = GETservice.getPeriodo();
+		$scope.model.url = "https://registro.usach.cl/registrold/salas/listarsala.php?sala=" + $scope.model.nombre + "&periodo=" + $scope.model.periodo;
+		
         google.maps.event.addListener(marker, 'click', function() {
           infowindow.open(map,marker);
         });
         
-        $scope.lat = $stateParams.lat;
-        $scope.long = $stateParams.long;
-        $scope.nombre = $stateParams.nombre;
-        $scope.piso = $stateParams.piso;
-        $scope.tipo = $stateParams.tipo;
         $scope.map = map;
     };
 
