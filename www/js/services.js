@@ -11,7 +11,7 @@ angular.module('starter.services', [])
 	};
 	var urlBase = "https://salasusach.herokuapp.com/";
 	//por defecto
-	var periodo = '2014-02';
+	var periodo = '2015-01';
 	return {
 		    //creamos una funcion la cual entra la variable "lugar" (con la sala o lugar) y retorna un dato, si es que existe en la DB
 			getData: function(lugar) {
@@ -33,6 +33,7 @@ angular.module('starter.services', [])
 						return $http.get(url).then(function(resp) {
 						dato.latitud = resp.data.slot1.latitud;
 						dato.longitud = resp.data.slot1.longitud;
+						dato.nombre = resp.data.slot1.nombre;
 						//DEBUG
 						//alert("SUCCESS!");
 						//alert(resp.data.slot1.longitud);
@@ -56,6 +57,9 @@ angular.module('starter.services', [])
 					return null;
 					// err.status will contain the status code
 			   })
+			},
+			getNombre: function() {
+				return dato.nombre;
 			},
 			getDetalles: function() {
 				return dato;

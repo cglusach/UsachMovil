@@ -56,6 +56,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
+  .state('umovil.resultadosala', {
+      url: "/resultadosala/:lat,:long,:nombre",
+      views: {
+        'menuContent' :{
+          templateUrl: "app/um_resultadosala.html"
+        }
+      }
+    })
+
   .state('umovil.acercade', {
       url: "/acercade",
       views: {
