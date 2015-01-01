@@ -22,6 +22,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
+
+  .state('umovil', {
+      url: "/umovil",
+      abstract: true,
+      templateUrl: "app/um_sidemenu.html"
+    })
+
+  .state('umovil.inicio', {
+      url: "/inicio",
+      views: {
+        'menuContent' :{
+          templateUrl: "app/um_inicio.html"
+        }
+      }
+    })
 	
 	.state('app.inicio', {
       url: "/inicio",
@@ -88,7 +103,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       abstract: true,
       templateUrl: "app/mapausach_datos.html",
       controller: 'AppCtrl'
-    })*/;
+    })*/
 
     /*
     .state('app.search', {
@@ -130,6 +145,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     });
     */
   
-  $urlRouterProvider.otherwise('/app/inicio');
+  $urlRouterProvider.otherwise('/umovil/inicio');
 });
 
