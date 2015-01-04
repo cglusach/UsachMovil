@@ -88,6 +88,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       abstract: true,
       templateUrl: "app/um_salasmenu.html"
     })
+
+  .state('salas.resultadosala', {
+      url: "/resultadosala/:lat,:long,:nombre",
+      views: {
+        'menuContent' :{
+          templateUrl: "app/um_resultadosala.html"
+        }
+      }
+    })
 	
 	.state('app.inicio', {
       url: "/inicio",

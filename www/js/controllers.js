@@ -17,7 +17,7 @@ angular.module('starter.controllers', [])
 			}
 			else {
 				$scope.estado = "Lugar encontrado";
-				$state.go('umovil.resultadosala', {lat: dato.latitud, long: dato.longitud, nombre: dato.nombre});
+				$state.go('salas.resultadosala', {lat: dato.latitud, long: dato.longitud, nombre: dato.nombre});
 			}
 		});
 	}
