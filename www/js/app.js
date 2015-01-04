@@ -65,6 +65,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
+  .state('umovil.links', {
+      url: "/links",
+      views: {
+        'menuContent' :{
+          templateUrl: "app/um_links.html"
+        }
+      }
+    })
+
   .state('umovil.acercade', {
       url: "/acercade",
       views: {
@@ -72,6 +81,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           templateUrl: "app/um_acercade.html"
         }
       }
+    })
+
+  .state('salas', {
+      url: "/salas",
+      abstract: true,
+      templateUrl: "app/um_salasmenu.html"
     })
 	
 	.state('app.inicio', {
