@@ -90,7 +90,7 @@ angular.module('starter.controllers', [])
     };
     
     $scope.toggleRight = function() {
-    $ionicSideMenuDelegate.toggleRight();
+        $ionicSideMenuDelegate.toggleRight();
   };
 })
 
