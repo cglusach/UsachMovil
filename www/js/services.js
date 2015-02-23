@@ -11,7 +11,7 @@ angular.module('starter.services', [])
 	};
 	var urlBase = "https://salasusach.herokuapp.com/";
 	//por defecto
-	var periodo = '2015-01';
+	var periodo = "2015-01";
 	return {
 		    //creamos una funcion la cual entra la variable "lugar" (con la sala o lugar) y retorna un dato, si es que existe en la DB
 			getData: function(lugar) {
@@ -21,19 +21,16 @@ angular.module('starter.services', [])
 		      //La primera busqueda asegura que exista el lugar
 			  return $http.get(url2).then(function(resp) {
 				  //Si en la primera busqueda obtenemos un dato valido, asignamos su piso, tipo y nombre del lugar
-				  if(resp.data.instance != "Nothing")
-				  {
+				  if(resp.data.instance !== "Nothing") {
 					  dato.piso = resp.data.slot1.piso;
 					  dato.tipo = resp.data.slot1.tipo;
 					  dato.nombre = resp.data.slot1.nombre;
 				  }
 				  //Si existe la sala o lugar entonces asignamos su latitud y longitud, en caso contrario dejamos vacios los campos
-				  if(resp.data.instance == "Just")
-				  {
+				  if(resp.data.instance === "Just") {
 						return $http.get(url).then(function(resp) {
 						dato.latitud = resp.data.slot1.latitud;
 						dato.longitud = resp.data.slot1.longitud;
-						dato.nombre = resp.data.slot1.nombre;
 						//DEBUG
 						//alert("SUCCESS!");
 						//alert(resp.data.slot1.longitud);
@@ -47,8 +44,7 @@ angular.module('starter.services', [])
 						// err.status will contain the status code
 				   })  
 				  }
-				  else
-				  {
+				  else {
 					return null;
 				  }
 			  }, function(err) {

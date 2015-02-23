@@ -47,10 +47,12 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
+        <!-- Datos provienen del controlador "MostrarMapaCtrl" -->
         <ion-item>
           <h2>Información:</h2>
-          Nombre del Lugar:</br>
-          Piso:</br>
+          <div id="infoNombre"></div>
+          <div id="infoPiso"></div>
+          <div id="infoHorario"></div>
         </ion-item>
         <ion-item>
           <h2>Ruta más corta:</h2>
@@ -58,9 +60,6 @@
           Distancia:</br>
           Caminando (4 km/h):</br>
           Corriendo (12 km/h):</br>
-        </ion-item>
-        <ion-item>
-          <button class="button button-block button-positive">Carga Académica Sala</button>
         </ion-item>
       </ion-list>
     </ion-content>

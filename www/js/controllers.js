@@ -11,19 +11,19 @@ angular.module('starter.controllers', [])
     $scope.getData = function() {
 		$scope.estado = "";
 		GETservice.getData($scope.model.lugar).then(function(dato){
-			if (!dato) {
+      if (!dato) {
 				$scope.estado = "No existe el lugar";
 				return;
 			}
 			else {
-				$scope.estado = "Lugar encontrado";
+        $scope.estado = "Lugar encontrado";
 				$state.go('salas.resultadosala', {lat: dato.latitud, long: dato.longitud, nombre: dato.nombre});
 			}
 		});
 	}
 })
 
-.controller('MostrarMapaCtrl', function($scope, $stateParams, GETservice, $ionicLoading, $compile) {
+.controller('MostrarMapaCtrl', function($scope, $stateParams, $ionicLoading, $compile, GETservice) {
     $scope.init = function() {
     $scope.model = {};
         var myLatlng = new google.maps.LatLng(parseFloat($stateParams.lat), parseFloat($stateParams.long));
@@ -54,13 +54,25 @@ angular.module('starter.controllers', [])
           title: Nombre
         });
 
-    $scope.model = GETservice.getDetalles();
-    $scope.model.periodo = GETservice.getPeriodo();
-    $scope.model.url = "https://registro.usach.cl/registrold/salas/listarsala.php?sala=" + $scope.model.nombre + "&periodo=" + $scope.model.periodo;
-    
+        $scope.model = GETservice.getDetalles();
+        $scope.model.periodo = GETservice.getPeriodo();
+        
+        if($scope.model.tipo === "sala") {
+          $scope.model.url = "https://registro.usach.cl/registrold/salas/listarsala.php?sala=" + $scope.model.nombre + "&periodo=" + $scope.model.periodo;
+          document.querySelector('#infoNombre').innerHTML = "Nombre del Lugar: Sala " + $scope.model.nombre;
+          document.querySelector('#infoPiso').innerHTML = "Piso: " + $scope.model.piso;
+          document.querySelector('#infoHorario').innerHTML = "<button class='button button-block button-positive'>Carga Académica Sala</button>";
+        }
+        else {
+          document.querySelector('#infoNombre').innerHTML = "Nombre del Lugar: " + $scope.model.nombre;
+          document.querySelector('#infoPiso').innerHTML = "Piso: " + $scope.model.piso; 
+        }
+
+        /*
         google.maps.event.addListener(marker, 'click', function() {
           infowindow.open(map,marker);
         });
+        */
         
         $scope.map = map;
     };
