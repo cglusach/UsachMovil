@@ -59,9 +59,10 @@ angular.module('starter.controllers', [])
         
         if($scope.model.tipo === "sala") {
           $scope.model.url = "https://registro.usach.cl/registrold/salas/listarsala.php?sala=" + $scope.model.nombre + "&periodo=" + $scope.model.periodo;
+          $scope.model.enlace = "onclick=\"window.open(\'" + $scope.model.url + "\', '_system');\"";
           document.querySelector('#infoNombre').innerHTML = "Nombre del Lugar: Sala " + $scope.model.nombre;
           document.querySelector('#infoPiso').innerHTML = "Piso: " + $scope.model.piso;
-          document.querySelector('#infoHorario').innerHTML = "<button class='button button-block button-positive'>Carga Académica Sala</button>";
+          document.querySelector('#infoHorario').innerHTML = "<button class='button button-block button-positive'" + $scope.model.enlace + ">Carga Académica Sala</button>";
         }
         else {
           document.querySelector('#infoNombre').innerHTML = "Nombre del Lugar: " + $scope.model.nombre;
