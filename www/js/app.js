@@ -81,7 +81,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
 
   .state('salas.resultadosala', {
-      url: "/resultadosala/:lat,:long,:nombre",
+      url: "/resultadosala/:nombre",
       views: {
         'menuContent' :{
           templateUrl: "app/um_resultadosala.html"

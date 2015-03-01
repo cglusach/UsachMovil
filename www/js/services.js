@@ -1,64 +1,74 @@
 angular.module('starter.services', [])
 
-.factory('GETservice', function($http) {
+.factory('GETservice', function($http, $q) {
 	//en teoria si resulta la recoleccion de datos, deberia de estar latitud y longitud en dato.latitud, dato.longitud
-	var dato = {
+	var lugar = {
+	  estado:'',
+	  valido:'',
+	  nombre:'',
 	  piso:'',
 	  tipo:'',
-	  nombre:'',
 	  latitud:'',
-	  longitud:''
+	  longitud:'',
+	  metroOrigen:'',
+	  rutaCorta: [ { latitud:'', longitud:'' } ],
+	  rutaLarga: [ { latitud:'', longitud:'' } ]
 	};
-	var urlBase = "https://salasusach.herokuapp.com/";
+
 	//por defecto
+	var urlBase = "https://salasusach.herokuapp.com/";
 	var periodo = "2015-01";
+
 	return {
-		    //creamos una funcion la cual entra la variable "lugar" (con la sala o lugar) y retorna un dato, si es que existe en la DB
-			getData: function(lugar) {
-			  //URLs
-			  url = urlBase + "coordenada/buscar/" +  lugar;
-			  url2 = urlBase + "lugar/buscar/" +  lugar;
-		      //La primera busqueda asegura que exista el lugar
-			  return $http.get(url2).then(function(resp) {
-				  //Si en la primera busqueda obtenemos un dato valido, asignamos su piso, tipo y nombre del lugar
-				  if(resp.data.instance !== "Nothing") {
-					  dato.piso = resp.data.slot1.piso;
-					  dato.tipo = resp.data.slot1.tipo;
-					  dato.nombre = resp.data.slot1.nombre;
-				  }
-				  //Si existe la sala o lugar entonces asignamos su latitud y longitud, en caso contrario dejamos vacios los campos
-				  if(resp.data.instance === "Just") {
-						return $http.get(url).then(function(resp) {
-						dato.latitud = resp.data.slot1.latitud;
-						dato.longitud = resp.data.slot1.longitud;
-						//DEBUG
-						//alert("SUCCESS!");
-						//alert(resp.data.slot1.longitud);
-						//alert(dato.longitud);
-						
-						return dato;
-					}, function(err) {
-						console.error('ERR', err);
-						alert("Conexion fallida");
-						return null;
-						// err.status will contain the status code
-				   })  
-				  }
-				  else {
-					return null;
-				  }
-			  }, function(err) {
+			fetchLugar: function(input) {
+			  url1 = urlBase + "/lugar/buscar/" + input;
+			  url2 = urlBase + "/coordenada/buscar/" + input;
+			  url3 = urlBase + "/coordenadas/minimo/" + input;
+			  url4 = urlBase + "/coordenadas/largo/" + input;
+
+				var req0 = $http.get(url1);
+				var req1 = $http.get(url2);
+
+				return $q.all([req0, req1]).then(function(obj) {
+			      if (obj[0].data.instance === 'Just') {
+			        lugar.nombre = obj[0].data.slot1.nombre;
+			        lugar.piso = obj[0].data.slot1.piso;
+			        lugar.tipo = obj[0].data.slot1.tipo;
+			        console.log(lugar.nombre);
+			        console.log(lugar.piso);
+			        console.log(lugar.tipo);
+			      }
+			      else {
+			      	lugar.estado = "Lugar no existe";
+			      	lugar.valido = false;
+			      	return lugar;
+			      }
+
+			      if (obj[1].data.instance === 'Just') {
+			        lugar.latitud = obj[1].data.slot1.latitud;
+			        lugar.longitud = obj[1].data.slot1.longitud;
+			        console.log(lugar.latitud);
+			        console.log(lugar.longitud);
+			      }
+			      else {
+			      	lugar.estado = "Lugar no existe";
+			      	lugar.valido = false;
+			      	return lugar;
+			      }
+			      lugar.estado = "¡Lugar encontrado!"
+			      lugar.valido = true;
+  				  return lugar;
+			  	}, function(err) {
 					console.error('ERR', err);
-					alert("Conexion fallida");
+					alert("ERROR: No se pueden obtener los datos del lugar a buscar");
 					return null;
-					// err.status will contain the status code
-			   })
+			   	});
 			},
-			getNombre: function() {
-				return dato.nombre;
+			getLugar: function() {
+				return lugar;
 			},
-			getDetalles: function() {
-				return dato;
+		    getNombre: function() {
+				return lugar.nombre;
 			},
 			setPeriodo: function(per) {
 				periodo = per;

@@ -10,14 +10,21 @@ angular.module('starter.controllers', [])
 	$scope.model = {};
     $scope.getData = function() {
 		$scope.estado = "";
-		GETservice.getData($scope.model.lugar).then(function(dato){
+		GETservice.fetchLugar($scope.model.lugar).then(function(dato){
       if (!dato) {
-				$scope.estado = "No existe el lugar";
+				$scope.estado = "ERROR: No se pudo hacer la consulta";
 				return;
 			}
 			else {
-        $scope.estado = "Lugar encontrado";
-				$state.go('salas.resultadosala', {lat: dato.latitud, long: dato.longitud, nombre: dato.nombre});
+        console.log(dato.estado + " " + dato.valido);
+        if (dato.valido === false) {
+          $scope.estado = dato.estado;
+          return;
+        }
+        else {
+          $scope.estado = dato.estado;
+          $state.go('salas.resultadosala', { nombre: dato.nombre });  
+        }
 			}
 		});
 	}
@@ -25,9 +32,11 @@ angular.module('starter.controllers', [])
 
 .controller('MostrarMapaCtrl', function($scope, $stateParams, $ionicLoading, $compile, GETservice) {
     $scope.init = function() {
-    $scope.model = {};
-        var myLatlng = new google.maps.LatLng(parseFloat($stateParams.lat), parseFloat($stateParams.long));
-        var Nombre = $stateParams.nombre;
+      $scope.model = GETservice.getLugar();
+      $scope.model.periodo = GETservice.getPeriodo();
+
+        var myLatlng = new google.maps.LatLng(parseFloat($scope.model.latitud), parseFloat($scope.model.longitud));
+        var Nombre = $scope.model.nombre;
         var mapOptions = {
           center: myLatlng,
           zoom: 17,
@@ -53,11 +62,8 @@ angular.module('starter.controllers', [])
           map: map,
           title: Nombre
         });
-
-        $scope.model = GETservice.getDetalles();
-        $scope.model.periodo = GETservice.getPeriodo();
         
-        if($scope.model.tipo === "sala") {
+        if($scope.model.tipo === 2) {
           $scope.model.url = "https://registro.usach.cl/registrold/salas/listarsala.php?sala=" + $scope.model.nombre + "&periodo=" + $scope.model.periodo;
           $scope.model.enlace = "onclick=\"window.open(\'" + $scope.model.url + "\', '_system');\"";
           document.querySelector('#infoNombre').innerHTML = "Nombre del Lugar: Sala " + $scope.model.nombre;
