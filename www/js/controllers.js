@@ -16,7 +16,7 @@ angular.module('starter.controllers', [])
 				return;
 			}
 			else {
-        console.log(dato.estado + " " + dato.valido);
+        //console.log(dato.estado + " " + dato.valido);
         if (dato.valido === false) {
           $scope.estado = dato.estado;
           return;
@@ -62,17 +62,33 @@ angular.module('starter.controllers', [])
           map: map,
           title: Nombre
         });
+
+        // Experimento para obtener las coordenadas de cada ruta
+        /*
+        console.log("RUTA CORTA");
+        for (var i=0; i<$scope.model.rutaCorta.length; i++) {
+          j = i+1;
+          console.log(j + " " + $scope.model.rutaCorta[i].latitud + " " + $scope.model.rutaCorta[i].longitud);
+        }
+        console.log("RUTA LARGA");
+        for (var i=0; i<$scope.model.rutaLarga.length; i++) {
+          j = i+1;
+          console.log(j + " " + $scope.model.rutaLarga[i].latitud + " " + $scope.model.rutaLarga[i].longitud);
+        }
+        */
         
         if($scope.model.tipo === 2) {
           $scope.model.url = "https://registro.usach.cl/registrold/salas/listarsala.php?sala=" + $scope.model.nombre + "&periodo=" + $scope.model.periodo;
           $scope.model.enlace = "onclick=\"window.open(\'" + $scope.model.url + "\', '_system');\"";
-          document.querySelector('#infoNombre').innerHTML = "Nombre del Lugar: Sala " + $scope.model.nombre;
-          document.querySelector('#infoPiso').innerHTML = "Piso: " + $scope.model.piso;
+          document.querySelector('#infoNombre').innerHTML = "<b>Nombre del Lugar:</b></br>Sala " + $scope.model.nombre;
+          document.querySelector('#infoPiso').innerHTML = "<b>Piso:</b></br>" + $scope.model.piso;
           document.querySelector('#infoHorario').innerHTML = "<button class='button button-block button-positive'" + $scope.model.enlace + ">Carga Académica Sala</button>";
+          document.querySelector('#infoMetro').innerHTML = "<b>Metro de Origen:</b></br>" + $scope.model.metroOrigen;
         }
         else {
           document.querySelector('#infoNombre').innerHTML = "Nombre del Lugar: " + $scope.model.nombre;
           document.querySelector('#infoPiso').innerHTML = "Piso: " + $scope.model.piso; 
+          document.querySelector('#infoMetro').innerHTML = "Metro de Origen: " + $scope.model.metroOrigen;
         }
 
         /*

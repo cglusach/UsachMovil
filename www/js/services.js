@@ -28,15 +28,17 @@ angular.module('starter.services', [])
 
 				var req0 = $http.get(url1);
 				var req1 = $http.get(url2);
+				var req2 = $http.get(url3);
+				var req3 = $http.get(url4);
 
-				return $q.all([req0, req1]).then(function(obj) {
+				return $q.all([req0, req1, req2, req3]).then(function(obj) {
 			      if (obj[0].data.instance === 'Just') {
 			        lugar.nombre = obj[0].data.slot1.nombre;
 			        lugar.piso = obj[0].data.slot1.piso;
 			        lugar.tipo = obj[0].data.slot1.tipo;
-			        console.log(lugar.nombre);
-			        console.log(lugar.piso);
-			        console.log(lugar.tipo);
+			        //console.log(lugar.nombre);
+			        //console.log(lugar.piso);
+			        //console.log(lugar.tipo);
 			      }
 			      else {
 			      	lugar.estado = "Lugar no existe";
@@ -47,14 +49,49 @@ angular.module('starter.services', [])
 			      if (obj[1].data.instance === 'Just') {
 			        lugar.latitud = obj[1].data.slot1.latitud;
 			        lugar.longitud = obj[1].data.slot1.longitud;
-			        console.log(lugar.latitud);
-			        console.log(lugar.longitud);
+			        //console.log(lugar.latitud);
+			        //console.log(lugar.longitud);
 			      }
 			      else {
 			      	lugar.estado = "Lugar no existe";
 			      	lugar.valido = false;
 			      	return lugar;
 			      }
+
+			      if (obj[2].data.instance === 'Just') {
+			      	for(var i=0; i<obj[2].data.slot1.length; i++) {
+			      		if (i === 0) {
+			      			if (parseFloat(obj[2].data.slot1[i][0])===-33.4525108565 && parseFloat(obj[2].data.slot1[i][1])===-70.6860424147) {
+			      				lugar.metroOrigen = "Universidad de Santiago";
+			      			}
+			      			else if (parseFloat(obj[2].data.slot1[i][0])===-33.4506444426 && parseFloat(obj[2].data.slot1[i][1])===-70.6792510615) {
+			      				lugar.metroOrigen = "Estación Central"
+			      			}
+			      			else {
+			      				lugar.metroOrigen = "Metro no válido";
+			      			}
+			      		}
+				        lugar.rutaCorta[i] = { latitud: obj[2].data.slot1[i][0], longitud: obj[2].data.slot1[i][1] };
+				    }
+			      }
+			      else {
+			      	lugar.estado = "Lugar no existe";
+			      	lugar.valido = false;
+			      	return lugar;
+			      }
+
+			      if (obj[3].data.instance === 'Just') {
+			      	for(var i=0; i<obj[3].data.slot1.length; i++) {
+				        lugar.rutaLarga[i] = { latitud: obj[3].data.slot1[i][0], longitud: obj[3].data.slot1[i][1] };
+				    }
+			      }
+			      else {
+			      	lugar.estado = "Lugar no existe";
+			      	lugar.valido = false;
+			      	return lugar;
+			      }
+
+
 			      lugar.estado = "¡Lugar encontrado!"
 			      lugar.valido = true;
   				  return lugar;
