@@ -18,3 +18,25 @@ El Equipo de Desarrollo está compuesto por:
 * Ian Orellana
 * María José Vera
 * René Zárate
+
+Compilando USACH Móvil
+----------------------
+
+Para compilar la aplicación se necesita un PC con las siguientes dependencias:
+
+* Node.js
+* Apache Cordova
+* Ionic Framework
+* Android SDK (versión 19)
+
+Después de clonar el repositorio, ejecuta los siguientes comandos para compilar:
+
+	$ ionic platform add android
+	$ cordova plugin add org.apache.cordova.inappbrowser
+	$ ionic build android
+	$ ionic run android
+
+Contáctanos
+-----------
+
+Si te interesa la aplicación, tienes sugerencias o encontraste un fallo; puedes contactarnos a: cgl[arroba]usach[punto]cl
