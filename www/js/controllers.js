@@ -156,4 +156,40 @@ angular.module('starter.controllers', [])
 
 		});
 	}
+})
+
+.controller('AccordionList', function($scope) {
+  $scope.groups = [];
+  $scope.groups[0] = {
+    name: "Facultades, escuelas, departamentos...",
+    items: ["Ingeniería","Humanidades","Tecnológica","Química y Biología","Administración y Economía","Depto. de Deportes","Departamento Física","Departamento de Matemáticas","Escuelas de Periodismo y Psicología","Bachillerato,Escuela de Arquitectura","Depto. de Filosofía y Educación","Ingeniería en Alimentos","Ingeniería Textil","LICAF","Pabellón de Anatomía"]
+  };
+  $scope.groups[1] = {
+    name: "Laboratorios",
+    items: ["Lab. Central - CECTA","Labs. de Física","Labs. de Ciencias Médicas","Labs. de Procesos Mecánicos"]
+  };
+  $scope.groups[2] = {
+    name: "Lugares Administrativos",
+    items: ["FEUSACH","Casa Central - Rectoría","SEGIC,Registro Académico","Registro Curricular Ingeniería","Depto. de Finanzas","Depto. Promoción de la Salud Psicológica","Patio de los Naranjos","Vicerrectoría de Gestión y Desarrollo Estudiantil","Bienestar Estudiantil - Ingeniería"]
+  };
+  $scope.groups[3] = {
+    name: "Lugares Varios",
+    items: ["Mall","Casino Central","Casino FAE","Cátedra UNESCO - PAIEP","Estadio Usach","Jardín Infantil","Aula Magna","Salón Bulnes","Salón Víctor Jara","Piscina","Gimnasio","Centro de Salud","Biblioteca Central","CITE-CAMP","CENI","Radio Usach","Sala Cuna","Paraninfo","Planetario","Foro Griego"]
+  };
+  
+  /*
+   * if given group is the selected group, deselect it
+   * else, select the given group
+   */
+  $scope.toggleGroup = function(group) {
+    if ($scope.isGroupShown(group)) {
+      $scope.shownGroup = null;
+    } else {
+      $scope.shownGroup = group;
+    }
+  };
+  $scope.isGroupShown = function(group) {
+    return $scope.shownGroup === group;
+  };
+  
 });
