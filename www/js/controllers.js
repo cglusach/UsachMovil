@@ -65,12 +65,12 @@ angular.module('starter.controllers', [])
 
         // Experimento para obtener las coordenadas de cada ruta
         /*
-        console.log("RUTA CORTA");
+        console.log("RUTA CORTA " + $scope.model.nombre);
         for (var i=0; i<$scope.model.rutaCorta.length; i++) {
           j = i+1;
           console.log(j + " " + $scope.model.rutaCorta[i].latitud + " " + $scope.model.rutaCorta[i].longitud);
         }
-        console.log("RUTA LARGA");
+        console.log("RUTA LARGA " + $scope.model.nombre);
         for (var i=0; i<$scope.model.rutaLarga.length; i++) {
           j = i+1;
           console.log(j + " " + $scope.model.rutaLarga[i].latitud + " " + $scope.model.rutaLarga[i].longitud);

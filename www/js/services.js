@@ -59,6 +59,7 @@ angular.module('starter.services', [])
 			      }
 
 			      if (obj[2].data.instance === 'Just') {
+			      	lugar.rutaCorta.length = 0;	// IMPORTANTE: Vaciar el arreglo antes de volver a usarlo
 			      	for(var i=0; i<obj[2].data.slot1.length; i++) {
 			      		if (i === 0) {
 			      			if (parseFloat(obj[2].data.slot1[i][0])===-33.4525108565 && parseFloat(obj[2].data.slot1[i][1])===-70.6860424147) {
@@ -81,6 +82,7 @@ angular.module('starter.services', [])
 			      }
 
 			      if (obj[3].data.instance === 'Just') {
+			      	lugar.rutaLarga.length = 0;	// IMPORTANTE: Vaciar el arreglo antes de volver a usarlo
 			      	for(var i=0; i<obj[3].data.slot1.length; i++) {
 				        lugar.rutaLarga[i] = { latitud: obj[3].data.slot1[i][0], longitud: obj[3].data.slot1[i][1] };
 				    }
