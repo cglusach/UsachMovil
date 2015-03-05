@@ -18,12 +18,13 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-    
+    /*
     db = $cordovaSQLite.openDB({ name: "my.db" });
     $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS opciones
       ( id_opcion integer PRIMARY KEY,
         nombre_opcion text,
         valor_opcion text )");
+    */
   });
 })
 

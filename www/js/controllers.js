@@ -80,20 +80,20 @@ angular.module('starter.controllers', [])
 //al cual se pasa el arreglo de coordenadas.
         var SPath = new google.maps.Polyline({
           path: SRoute,
-          strokeColor: '#FF0000',
+          strokeColor: '#05FF05',
           strokeOpacity: 1.0,
           strokeWeight: 3
         });
 
         var LPath = new google.maps.Polyline({
           path: LRoute,
-          strokeColor: '#0101DF',
+          strokeColor: '#FF0000',
           strokeOpacity: 1.0,
           strokeWeight: 3
         });
 
-SPath.setMap(map);
-LPath.setMap(map);
+        SPath.setMap(map);
+        LPath.setMap(map);
 
         var marker = new google.maps.Marker({
           position: myLatlng,
@@ -114,19 +114,32 @@ LPath.setMap(map);
           console.log(j + " " + $scope.model.rutaLarga[i].latitud + " " + $scope.model.rutaLarga[i].longitud);
         }
         */
-        
+
+        // Experimento para obtener las distancias y tiempos desde el metro
+        /*
+        var distanciaCorta = distanciaEnMetros(SPath);
+        var distanciaLarga = distanciaEnMetros(LPath);
+        var tiempoCorto = tiempoCaminando(distanciaCorta);
+        var tiempoLargo = tiempoCorriendo(distanciaCorta);
+        console.log("ruta " + distanciaCorta + " " + distanciaLarga);
+        console.log("tiempo " + formatearTiempo(tiempoCorto) + " " + formatearTiempo(tiempoLargo));
+        */
+
+        $scope.model.distancia = distanciaEnMetros(SPath);
+        $scope.model.tiempoCorto = tiempoCaminando($scope.model.distancia);
+        $scope.model.tiempoLargo = tiempoCorriendo($scope.model.distancia);
+
+        document.querySelector('#infoNombre').innerHTML = "<b>Nombre del Lugar:</b></br>Sala " + $scope.model.nombre;
+        document.querySelector('#infoPiso').innerHTML = "<b>Piso:</b></br>" + $scope.model.piso;
+        document.querySelector('#infoMetro').innerHTML = "<b>Metro de Origen:</b></br>" + $scope.model.metroOrigen;
+        document.querySelector('#infoDistancia').innerHTML = "<b>Distancia:</b></br>" + $scope.model.distancia + " mt";
+        document.querySelector('#infoCamina').innerHTML = "<b>Tiempo Caminando (4 km/h):</b></br>" + formatearTiempo($scope.model.tiempoCorto);
+        document.querySelector('#infoCorre').innerHTML = "<b>Tiempo Corriendo (12 km/h):</b></br>" + formatearTiempo($scope.model.tiempoLargo);
+
         if($scope.model.tipo === 2) {
           $scope.model.url = "https://registro.usach.cl/registrold/salas/listarsala.php?sala=" + $scope.model.nombre + "&periodo=" + $scope.model.periodo;
           $scope.model.enlace = "onclick=\"window.open(\'" + $scope.model.url + "\', '_system');\"";
-          document.querySelector('#infoNombre').innerHTML = "<b>Nombre del Lugar:</b></br>Sala " + $scope.model.nombre;
-          document.querySelector('#infoPiso').innerHTML = "<b>Piso:</b></br>" + $scope.model.piso;
-          document.querySelector('#infoHorario').innerHTML = "<button class='button button-block button-positive'" + $scope.model.enlace + ">Carga Académica Sala</button>";
-          document.querySelector('#infoMetro').innerHTML = "<b>Metro de Origen:</b></br>" + $scope.model.metroOrigen;
-        }
-        else {
-          document.querySelector('#infoNombre').innerHTML = "Nombre del Lugar: " + $scope.model.nombre;
-          document.querySelector('#infoPiso').innerHTML = "Piso: " + $scope.model.piso; 
-          document.querySelector('#infoMetro').innerHTML = "Metro de Origen: " + $scope.model.metroOrigen;
+          document.querySelector('#infoHorario').innerHTML = "<button class='button button-block button-positive'" + $scope.model.enlace + ">Carga Horaria Sala</button>";
         }
 
         /*
@@ -140,6 +153,8 @@ LPath.setMap(map);
 
     // google.maps.event.addDomListener(window, 'load', initialize);
 
+    // CÓDIGO DEPRECADO
+    /*
     $scope.centerOnMe = function() {
         if(!$scope.map) {
             return;
@@ -164,7 +179,51 @@ LPath.setMap(map);
     
     $scope.toggleRight = function() {
         $ionicSideMenuDelegate.toggleRight();
-  };
+    };
+    */
+
+    google.maps.LatLng.prototype.kmTo = function(a){ 
+      var e = Math, ra = e.PI/180; 
+      var b = this.lat() * ra, c = a.lat() * ra, d = b - c; 
+      var g = this.lng() * ra - a.lng() * ra; 
+      var f = 2 * e.asin(e.sqrt(e.pow(e.sin(d/2), 2) + e.cos(b) * e.cos 
+      (c) * e.pow(e.sin(g/2), 2))); 
+      return f * 6378.137; 
+    };
+
+    google.maps.Polyline.prototype.inKm = function(n){ 
+      var a = this.getPath(n), len = a.getLength(), dist = 0; 
+      for (var i=0; i < len-1; i++) { 
+        dist += a.getAt(i).kmTo(a.getAt(i+1)); 
+      }
+      return dist;
+    };
+
+    distanciaEnMetros = function(ruta) {
+        return Math.round(ruta.inKm()*1000);
+    };
+
+    tiempoCaminando = function(distancia) {
+      var velocidad = 1.111111111; // 4 km/h
+      return Math.round(distancia/velocidad);
+    };
+
+    tiempoCorriendo = function(distancia) {
+      var velocidad = 3.333333333; // 12 km/h
+      return Math.round(distancia/velocidad);
+    };
+
+    formatearTiempo = function(tiempo) {
+      // Transforma un lote de segundos en segundos y minutos
+      // Ej: 90s -> 1m30s
+      var mins = Math.floor(tiempo/60);
+      var secs = Math.round(tiempo%60);
+      return mins + "m " + get2D(secs) + "s";
+    };
+
+    function get2D(num) {
+      return ( num.toString().length < 2 ? "0"+num : num ).toString();
+    }
 })
 
 
