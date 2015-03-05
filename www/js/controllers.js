@@ -57,6 +57,44 @@ angular.module('starter.controllers', [])
         });
         */
 
+        var SRoute = [];
+        var LRoute = [];
+
+        
+
+        
+        for (var i=0; i<$scope.model.rutaCorta.length; i++){
+          var lat = $scope.model.rutaCorta[i].latitud;
+          var ln = $scope.model.rutaCorta[i].longitud;
+          SRoute[SRoute.length] = new google.maps.LatLng(lat,ln);
+        }
+
+        SRoute[SRoute.length] = myLatlng;
+
+        for (var i=0; i<$scope.model.rutaLarga.length; i++){
+          var lat = $scope.model.rutaLarga[i].latitud;
+          var ln = $scope.model.rutaLarga[i].longitud;
+          LRoute[LRoute.length] = new google.maps.LatLng(lat,ln);
+        }
+//Se instancia un objeto del tipo google.maps.Polyline
+//al cual se pasa el arreglo de coordenadas.
+        var SPath = new google.maps.Polyline({
+          path: SRoute,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        });
+
+        var LPath = new google.maps.Polyline({
+          path: LRoute,
+          strokeColor: '#0101DF',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        });
+
+SPath.setMap(map);
+LPath.setMap(map);
+
         var marker = new google.maps.Marker({
           position: myLatlng,
           map: map,
