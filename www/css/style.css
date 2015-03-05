@@ -20,3 +20,26 @@
 .list .item.item-accordion.ng-hide-remove {
   display: block !important;
 }
+
+.col{
+  background-color:gray !important;
+  border:thin solid black;
+  text-align:center !important;
+}
+
+.item-input{
+  display: block !important;
+}
+
+.input-label {
+  max-width: 100%;
+  width: 100%;
+}
+
+.item-select select {
+  position: relative;
+}
+
+.item-select:after {
+  top: 60%;
+}

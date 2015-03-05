@@ -93,13 +93,12 @@ angular.module('starter.services', [])
 			      	return lugar;
 			      }
 
-
 			      lugar.estado = "¡Lugar encontrado!"
 			      lugar.valido = true;
   				  return lugar;
 			  	}, function(err) {
 					console.error('ERR', err);
-					alert("ERROR: No se pueden obtener los datos del lugar a buscar");
+					//alert("ERROR: No se pueden obtener los datos del lugar a buscar");
 					return null;
 			   	});
 			},

@@ -8,21 +8,26 @@ angular.module('starter.controllers', [])
 
 .controller('BuscarSalaCtrl', function($scope, $http, $state, GETservice) {
 	$scope.model = {};
+  $scope.estado = "Esperando ingreso de sala...";
     $scope.getData = function() {
 		$scope.estado = "";
 		GETservice.fetchLugar($scope.model.lugar).then(function(dato){
+      $scope.estado = "Buscando...";
       if (!dato) {
-				$scope.estado = "ERROR: No se pudo hacer la consulta";
+				$scope.estado = "ERROR: No se pudo hacer la consulta a la Base de Datos";
+        //alert($scope.estado);
 				return;
 			}
 			else {
         //console.log(dato.estado + " " + dato.valido);
         if (dato.valido === false) {
           $scope.estado = dato.estado;
+          //alert($scope.estado);
           return;
         }
         else {
           $scope.estado = dato.estado;
+          //alert($scope.estado);
           $state.go('salas.resultadosala', { nombre: dato.nombre });  
         }
 			}
@@ -57,12 +62,22 @@ angular.module('starter.controllers', [])
         });
         */
 
+        // Geolocalización
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          var posicion = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+          var marker = new google.maps.Marker({
+            position: posicion,
+            map: map,
+            title: "Tu Posición Actual",
+            icon: "img/marker_youarehere.png"
+          });
+        }, function(error) {
+          alert('Unable to get location: ' + error.message);
+        });
+
         var SRoute = [];
         var LRoute = [];
 
-        
-
-        
         for (var i=0; i<$scope.model.rutaCorta.length; i++){
           var lat = $scope.model.rutaCorta[i].latitud;
           var ln = $scope.model.rutaCorta[i].longitud;
@@ -76,8 +91,8 @@ angular.module('starter.controllers', [])
           var ln = $scope.model.rutaLarga[i].longitud;
           LRoute[LRoute.length] = new google.maps.LatLng(lat,ln);
         }
-//Se instancia un objeto del tipo google.maps.Polyline
-//al cual se pasa el arreglo de coordenadas.
+        //Se instancia un objeto del tipo google.maps.Polyline
+        //al cual se pasa el arreglo de coordenadas.
         var SPath = new google.maps.Polyline({
           path: SRoute,
           strokeColor: '#05FF05',

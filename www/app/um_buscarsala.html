@@ -3,16 +3,19 @@
         <form>
 			<div class="list">
 				<label class="item item-input item-stacked-label">
-					<span class="input-label">Nombre de la sala a buscar:</span>
+					<span class="input-label"><b>Nombre de la sala a buscar:</b></span>
 					<input type="text" placeholder="Sala 518, piscina, laboratorio..." ng-model="model.lugar">
 				</label>
-				<label class="item item-stacked-label">
-					<span>Estado:</span>
-					{{estado}}
+				<label class="item item-input">
+    				<div class="input-label"><b>Estado:</b></div>
+    				{{estado}}
 				</label>
 				<label class="item">
 					  <button class="button button-block button-positive" type="submit" ng-click="getData()">Buscar</button>
 				</label>
+				<label class="item">
+          			<center><h6>Potenciado por Salas USACH</br>http://salasusach.herokuapp.com</h6></center>
+        		</label>
 			</div>
 		</form>
 	</ion-content>
