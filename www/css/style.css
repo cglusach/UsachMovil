@@ -20,3 +20,9 @@
 .list .item.item-accordion.ng-hide-remove {
   display: block !important;
 }
+
+.item-button-right {
+	display: block;
+	width: 100%;
+	text-align: left;
+}

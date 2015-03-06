@@ -27,7 +27,7 @@ angular.module('starter.controllers', [])
         }
 			}
 		});
-	}
+	};
 })
 
 .controller('MostrarMapaCtrl', function($scope, $stateParams, $ionicLoading, $compile, GETservice) {
@@ -193,26 +193,35 @@ LPath.setMap(map);
 			$scope.tipo = dato.tipo;
 
 		});
-	}
+	};
 })
 
-.controller('AccordionList', function($scope) {
+.controller('AccordionList', function($scope, $http, $state, GETservice) {
+
   $scope.groups = [];
   $scope.groups[0] = {
-    name: "Facultades, escuelas, departamentos...",
-    items: ["Ingeniería","Humanidades","Tecnológica","Química y Biología","Administración y Economía","Depto. de Deportes","Departamento Física","Departamento de Matemáticas","Escuelas de Periodismo y Psicología","Bachillerato,Escuela de Arquitectura","Depto. de Filosofía y Educación","Ingeniería en Alimentos","Ingeniería Textil","LICAF","Pabellón de Anatomía"]
+    name: "Facultades, escuelas, departamentos",
+    items: ["Auditorio de Química y Biología","Bachillerato","Departamento de Deporte","Departamento de Desarrollo de Talentos Artísticos","Departamento Filosofía","Departamento Física","Escuela de Arquitectura","Escuela de Periodismo y Psicología","Facultad de Administración y Economía - FAE","Facultad de Humanidades","Facultad de Química y Biología","Facultad Tecnológica","Ingeniería en Alimentos","Ingeniería Textil","Licenciatura en Ciencias de la Actividad Física "]
   };
   $scope.groups[1] = {
-    name: "Laboratorios",
-    items: ["Lab. Central - CECTA","Labs. de Física","Labs. de Ciencias Médicas","Labs. de Procesos Mecánicos"]
+    name: "Ingeniería",
+    items: ["Bienestar Estudiantil - Ingeniería","Departamento de Ingeniería en Minas (dimin)","Departamento de Ingeniería Informática (diinf)","Departamento de Ingeniería Mecánica ","Departamento de Ingeniería Química","Departamento Ingeniería Eléctrica","Departamento Ingeniería Geográfica","Departamento Ingeniería Industrial","Departamento Ingeniería Obras Civiles","Facultad de Ingeniería","Registro Curricular - Ingeniería"]
   };
   $scope.groups[2] = {
-    name: "Lugares Administrativos",
-    items: ["FEUSACH","Casa Central - Rectoría","SEGIC,Registro Académico","Registro Curricular Ingeniería","Depto. de Finanzas","Depto. Promoción de la Salud Psicológica","Patio de los Naranjos","Vicerrectoría de Gestión y Desarrollo Estudiantil","Bienestar Estudiantil - Ingeniería"]
+    name: "Laboratorios",
+    items: ["Laboratorio Central - CECTA","Laboratorio Ciencias Médicas","Laboratorio de Procesos Mecánicos","Laboratorios de Física"]
   };
   $scope.groups[3] = {
-    name: "Lugares Varios",
-    items: ["Mall","Casino Central","Casino FAE","Cátedra UNESCO - PAIEP","Estadio Usach","Jardín Infantil","Aula Magna","Salón Bulnes","Salón Víctor Jara","Piscina","Gimnasio","Centro de Salud","Biblioteca Central","CITE-CAMP","CENI","Radio Usach","Sala Cuna","Paraninfo","Planetario","Foro Griego"]
+    name: "Administrativo",
+    items: ["Casa Central - Rectoría ","Departamento de Finanzas","Federación de Estudiantes - FEUSACH","Patio de los Naranjos","Registro Académico","SEGIC","Vicerrectoría de Gestión y Desarrollo Estudiantil"]
+  };
+  $scope.groups[4] = {
+    name: "Varios",
+    items: ["Aula Magna","Biblioteca Central","Casino Central","Casino FAE","Casino Ingeniería Eléctrica","Centro de Eventos - CENI ","Centro de Salud","CITE-CAMP","Departamento de Matemáticas ","Depto. Promoción de la Salud Psicológica ","Foro Griego","Estadio USACH","Gimnasio","Kiosko Informática","Paraninfo","Piscina","Planetario","Sala Cuna","Salón Victor Jara","Radio USACH"]
+  };
+  $scope.groups[5] = {
+    name: "Entradas y metros",
+    items: ["Entrada - CENI (Vehículos)","Entrada - Centro de Salud (Peatones)","Entrada - Cultura (Peatones)","Entrada - EAO (Peatones)","Entrada - Fac. Tecnológica (Vehículos y Peatones)","Entrada -  Ing. Industrial (Peatones)","Entrada - Rectoría (Peatones)","Frontis","Metro Estación Central","Metro USACH"]
   };
   
   /*
@@ -229,5 +238,27 @@ LPath.setMap(map);
   $scope.isGroupShown = function(group) {
     return $scope.shownGroup === group;
   };
-  
+
+  $scope.getData = function(item) {
+    $scope.estado = "";
+    
+    GETservice.fetchLugar(item).then(function(dato){
+      if (!dato) {
+        $scope.estado = "ERROR: No se pudo hacer la consulta";
+        return;
+      }
+      else {
+        //console.log(dato.estado + " " + dato.valido);
+        if (dato.valido === false) {
+          $scope.estado = dato.estado;
+          return;
+        }
+        else {
+          $scope.estado = dato.estado;
+          $state.go('salas.resultadosala', { nombre: dato.nombre });  
+        }
+      }
+    });
+  };
+
 });
