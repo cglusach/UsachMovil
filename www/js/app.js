@@ -55,6 +55,15 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
       }
     })
 
+  .state('umovil.ayuda', {
+      url: "/ayuda",
+      views: {
+        'menuContent' :{
+          templateUrl: "app/um_ayuda.html"
+        }
+      }
+    })
+
   .state('umovil.buscarsala', {
       url: "/buscarsala",
       views: {
@@ -72,6 +81,8 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
         }
       }
     })
+  
+  /*
   .state('umovil.ingenieria', {
       url: "/ingenieria",
       views: {
@@ -80,6 +91,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
         }
       }
     })
+  */
 
   .state('umovil.links', {
       url: "/links",

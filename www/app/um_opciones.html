@@ -1,15 +1,27 @@
-<ion-view title="Opciones de USACH Móvil">
+<ion-view title="Opciones de USACH Móvil" ng-controller="OpcionesCtrl">
 	<ion-content>
 		<form>
 			<div class="list">
 				<label class="item item-input item-stacked-label">
-					<span class="input-label">Página de Salas USACH</span>
-					<input type="text">
+					<div class="input-label">Página de Salas USACH</div>
+					<input placeholder="https://salasusach.herokuapp.com/" type="text" ng-model="model.url">
+				</label>
+				<label class="item item-input item-select">
+					<div class="input-label">Semestre Actual</div>
+					<select ng-model="model.semestre">
+						<option selected>2015-01</option>
+						<option>2015-02</option>
+						<option>2016-01</option>
+						<option>2016-02</option>
+					</select>
+				</label>
+				<ion-toggle ng-repeat="item in settingsList" ng-model="model.gps" ng-checked="item.checked">
+          			{{item.opcion}}
+        		</ion-toggle>
+				<label class="item">
+					<button class="button button-block button-positive" type="submit" ng-click="getData()">Guardar</button>
 				</label>
 			</div>
-			<label class="item">
-				<button class="button button-block button-positive" type="submit">Guardar</button>
-			</label>
 		</form>
 	</ion-content>
 </ion-view>

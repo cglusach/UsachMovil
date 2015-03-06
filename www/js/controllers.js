@@ -32,7 +32,7 @@ angular.module('starter.controllers', [])
         }
 			}
 		});
-	}
+	};
 })
 
 .controller('MostrarMapaCtrl', function($scope, $stateParams, $ionicLoading, $compile, GETservice) {
@@ -62,7 +62,8 @@ angular.module('starter.controllers', [])
         });
         */
 
-        // Geolocalización
+        // GEOLOCALIZACIÓN
+        /*
         navigator.geolocation.getCurrentPosition(function(pos) {
           var posicion = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
           var marker = new google.maps.Marker({
@@ -74,6 +75,7 @@ angular.module('starter.controllers', [])
         }, function(error) {
           alert('Unable to get location: ' + error.message);
         });
+        */
 
         var SRoute = [];
         var LRoute = [];
@@ -144,14 +146,14 @@ angular.module('starter.controllers', [])
         $scope.model.tiempoCorto = tiempoCaminando($scope.model.distancia);
         $scope.model.tiempoLargo = tiempoCorriendo($scope.model.distancia);
 
-        document.querySelector('#infoNombre').innerHTML = "<b>Nombre del Lugar:</b></br>Sala " + $scope.model.nombre;
+        document.querySelector('#infoNombre').innerHTML = "<b>Nombre del Lugar:</b></br>" + $scope.model.nombre;
         document.querySelector('#infoPiso').innerHTML = "<b>Piso:</b></br>" + $scope.model.piso;
         document.querySelector('#infoMetro').innerHTML = "<b>Metro de Origen:</b></br>" + $scope.model.metroOrigen;
         document.querySelector('#infoDistancia').innerHTML = "<b>Distancia:</b></br>" + $scope.model.distancia + " mt";
         document.querySelector('#infoCamina').innerHTML = "<b>Tiempo Caminando (4 km/h):</b></br>" + formatearTiempo($scope.model.tiempoCorto);
         document.querySelector('#infoCorre').innerHTML = "<b>Tiempo Corriendo (12 km/h):</b></br>" + formatearTiempo($scope.model.tiempoLargo);
 
-        if($scope.model.tipo === 2) {
+        if( !isNaN($scope.model.nombre) ) {
           $scope.model.url = "https://registro.usach.cl/registrold/salas/listarsala.php?sala=" + $scope.model.nombre + "&periodo=" + $scope.model.periodo;
           $scope.model.enlace = "onclick=\"window.open(\'" + $scope.model.url + "\', '_system');\"";
           document.querySelector('#infoHorario').innerHTML = "<button class='button button-block button-positive'" + $scope.model.enlace + ">Carga Horaria Sala</button>";
@@ -241,8 +243,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-
-
+/*
 .controller('GETController', function($scope, $http, GETservice) {
 	$scope.model = {};
     $scope.getData = function() {
@@ -267,26 +268,35 @@ angular.module('starter.controllers', [])
 			$scope.tipo = dato.tipo;
 
 		});
-	}
+	};
 })
+*/
 
-.controller('AccordionList', function($scope) {
+.controller('AccordionList', function($scope, $http, $state, GETservice) {
   $scope.groups = [];
   $scope.groups[0] = {
-    name: "Facultades, escuelas, departamentos...",
-    items: ["Ingeniería","Humanidades","Tecnológica","Química y Biología","Administración y Economía","Depto. de Deportes","Departamento Física","Departamento de Matemáticas","Escuelas de Periodismo y Psicología","Bachillerato,Escuela de Arquitectura","Depto. de Filosofía y Educación","Ingeniería en Alimentos","Ingeniería Textil","LICAF","Pabellón de Anatomía"]
+    name: "Facultades, Escuelas y Departamentos",
+    items: ["Auditorio de Química y Biología","Bachillerato","Departamento de Deporte","Departamento de Desarrollo de Talentos Artísticos","Departamento Filosofía","Departamento Física","Escuela de Arquitectura","Escuela de Periodismo y Psicología","Facultad de Administración y Economía - FAE","Facultad de Humanidades","Facultad de Química y Biología","Facultad Tecnológica","Ingeniería en Alimentos","Ingeniería Textil","Licenciatura en Ciencias de la Actividad Física "]
   };
   $scope.groups[1] = {
-    name: "Laboratorios",
-    items: ["Lab. Central - CECTA","Labs. de Física","Labs. de Ciencias Médicas","Labs. de Procesos Mecánicos"]
+    name: "Ingeniería",
+    items: ["Bienestar Estudiantil - Ingeniería","Departamento de Ingeniería en Minas (dimin)","Departamento de Ingeniería Informática (diinf)","Departamento de Ingeniería Mecánica ","Departamento de Ingeniería Química","Departamento Ingeniería Eléctrica","Departamento Ingeniería Geográfica","Departamento Ingeniería Industrial","Departamento Ingeniería Obras Civiles","Facultad de Ingeniería","Registro Curricular - Ingeniería"]
   };
   $scope.groups[2] = {
-    name: "Lugares Administrativos",
-    items: ["FEUSACH","Casa Central - Rectoría","SEGIC,Registro Académico","Registro Curricular Ingeniería","Depto. de Finanzas","Depto. Promoción de la Salud Psicológica","Patio de los Naranjos","Vicerrectoría de Gestión y Desarrollo Estudiantil","Bienestar Estudiantil - Ingeniería"]
+    name: "Laboratorios",
+    items: ["Laboratorio Central - CECTA","Laboratorio Ciencias Médicas","Laboratorio de Procesos Mecánicos","Laboratorios de Física"]
   };
   $scope.groups[3] = {
-    name: "Lugares Varios",
-    items: ["Mall","Casino Central","Casino FAE","Cátedra UNESCO - PAIEP","Estadio Usach","Jardín Infantil","Aula Magna","Salón Bulnes","Salón Víctor Jara","Piscina","Gimnasio","Centro de Salud","Biblioteca Central","CITE-CAMP","CENI","Radio Usach","Sala Cuna","Paraninfo","Planetario","Foro Griego"]
+    name: "Administrativo",
+    items: ["Casa Central - Rectoría ","Departamento de Finanzas","Federación de Estudiantes - FEUSACH","Patio de los Naranjos","Registro Académico","SEGIC","Vicerrectoría de Gestión y Desarrollo Estudiantil"]
+  };
+  $scope.groups[4] = {
+    name: "Varios",
+    items: ["Aula Magna","Biblioteca Central","Casino Central","Casino FAE","Casino Ingeniería Eléctrica","Centro de Eventos - CENI ","Centro de Salud","CITE-CAMP","Departamento de Matemáticas ","Depto. Promoción de la Salud Psicológica ","Foro Griego","Estadio USACH","Gimnasio","Kiosko Informática","Paraninfo","Piscina","Planetario","Sala Cuna","Salón Victor Jara","Radio USACH"]
+  };
+  $scope.groups[5] = {
+    name: "Entradas y Metros",
+    items: ["Entrada - CENI (Vehículos)","Entrada - Centro de Salud (Peatones)","Entrada - Cultura (Peatones)","Entrada - EAO (Peatones)","Entrada - Fac. Tecnológica (Vehículos y Peatones)","Entrada -  Ing. Industrial (Peatones)","Entrada - Rectoría (Peatones)","Frontis","Metro Estación Central","Metro USACH"]
   };
   
   /*
@@ -300,8 +310,49 @@ angular.module('starter.controllers', [])
       $scope.shownGroup = group;
     }
   };
+
   $scope.isGroupShown = function(group) {
     return $scope.shownGroup === group;
   };
-  
+
+  $scope.getData = function(item) {
+    $scope.estado = "";
+    
+    GETservice.fetchLugar(item).then(function(dato){
+      if (!dato) {
+        $scope.estado = "ERROR: No se pudo hacer la consulta";
+        return;
+      }
+      else {
+        //console.log(dato.estado + " " + dato.valido);
+        if (dato.valido === false) {
+          $scope.estado = dato.estado;
+          return;
+        }
+        else {
+          $scope.estado = dato.estado;
+          $state.go('salas.resultadosala', { nombre: dato.nombre });  
+        }
+      }
+    });
+  };
+})
+
+.controller('OpcionesCtrl', function($scope) {
+  // TODO
+  var url = "https://salasusach.herokuapp.com/";
+  var semestre = "2015-01";
+  var gps = true;
+
+  $scope.model = {};
+  $scope.settingsList = [ { opcion: "Geolocalización", checked: true } ];
+
+  $scope.getData = function() {
+    url = $scope.model.url;
+    semestre = $scope.model.semestre;
+    gps = $scope.model.gps;
+
+    console.log(url + " " + semestre + " " + gps);
+  }
 });
+

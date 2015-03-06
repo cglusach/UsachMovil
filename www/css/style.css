@@ -27,6 +27,12 @@
   text-align:center !important;
 }
 
+.item-button-right {
+	display: block;
+	width: 100%;
+	text-align: left;
+}
+
 .item-input{
   display: block !important;
 }
