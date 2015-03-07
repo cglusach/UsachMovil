@@ -6,7 +6,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('BuscarSalaCtrl', function($scope, $http, $state, GETservice) {
+.controller('BuscarSalaCtrl', function($scope, $http, $state, $ionicPopup, GETservice) {
 	$scope.model = {};
   $scope.estado = "Esperando ingreso de sala...";
     $scope.getData = function() {
@@ -14,25 +14,34 @@ angular.module('starter.controllers', [])
 		GETservice.fetchLugar($scope.model.lugar).then(function(dato){
       $scope.estado = "Buscando...";
       if (!dato) {
-				$scope.estado = "ERROR: No se pudo hacer la consulta a la Base de Datos";
-        //alert($scope.estado);
-				return;
+				$scope.estado = "No se pudo hacer la consulta a la Base de Datos. Verifica tu conexión a Internet.";
+        $scope.showAlert();
+        return;
 			}
 			else {
         //console.log(dato.estado + " " + dato.valido);
         if (dato.valido === false) {
           $scope.estado = dato.estado;
-          //alert($scope.estado);
+          $scope.showAlert();
           return;
         }
         else {
           $scope.estado = dato.estado;
-          //alert($scope.estado);
           $state.go('salas.resultadosala', { nombre: dato.nombre });  
         }
 			}
 		});
 	};
+
+  $scope.showAlert = function() {
+   var alertPopup = $ionicPopup.alert({
+      title: "ERROR",
+      template: $scope.estado
+    });
+    alertPopup.then(function(res) {
+      console.log('Error descartado');
+    });
+  };
 })
 
 .controller('MostrarMapaCtrl', function($scope, $stateParams, $ionicLoading, $compile, GETservice) {
@@ -272,7 +281,7 @@ angular.module('starter.controllers', [])
 })
 */
 
-.controller('AccordionList', function($scope, $http, $state, GETservice) {
+.controller('AccordionList', function($scope, $http, $state, $ionicPopup, GETservice) {
   $scope.groups = [];
   $scope.groups[0] = {
     name: "Facultades, Escuelas y Departamentos",
@@ -320,13 +329,15 @@ angular.module('starter.controllers', [])
     
     GETservice.fetchLugar(item).then(function(dato){
       if (!dato) {
-        $scope.estado = "ERROR: No se pudo hacer la consulta";
+        $scope.estado = "No se pudo hacer la consulta a la Base de Datos. Verifica tu conexión a Internet.";
+        $scope.showAlert();
         return;
       }
       else {
         //console.log(dato.estado + " " + dato.valido);
         if (dato.valido === false) {
           $scope.estado = dato.estado;
+          $scope.showAlert();
           return;
         }
         else {
@@ -334,6 +345,16 @@ angular.module('starter.controllers', [])
           $state.go('salas.resultadosala', { nombre: dato.nombre });  
         }
       }
+    });
+  };
+
+  $scope.showAlert = function() {
+   var alertPopup = $ionicPopup.alert({
+      title: "ERROR",
+      template: $scope.estado
+    });
+    alertPopup.then(function(res) {
+      console.log('Error descartado');
     });
   };
 })
