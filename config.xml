@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="cl.cglusach.umovil" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="cl.cglusach.umovil" version="1.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>USACH Móvil</name>
   <description>
 	Aplicación (no oficial) de ayuda y orientación para los estudiantes de la Universidad de Santiago de Chile

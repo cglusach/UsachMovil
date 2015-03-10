@@ -6,20 +6,31 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('BuscarSalaCtrl', function($scope, $http, $state, $ionicPopup, GETservice) {
+.controller('BuscarSalaCtrl', function($scope, $http, $state, $ionicPopup, $ionicLoading, GETservice) {
 	$scope.model = {};
   $scope.estado = "Esperando ingreso de sala...";
     $scope.getData = function() {
-		$scope.estado = "";
-		GETservice.fetchLugar($scope.model.lugar).then(function(dato){
+    $scope.estado = "";
+    
+    $ionicLoading.show({
+      content: 'Buscando...',
+      animation: 'fade-in',
+      showBackdrop: false,
+      maxWidth: 200,
+      showDelay: 150
+    });
+
+  	GETservice.fetchLugar($scope.model.lugar).then(function(dato){
       $scope.estado = "Buscando...";
+      
       if (!dato) {
+        $ionicLoading.hide();
 				$scope.estado = "No se pudo hacer la consulta a la Base de Datos. Verifica tu conexión a Internet.";
         $scope.showAlert();
         return;
 			}
 			else {
-        //console.log(dato.estado + " " + dato.valido);
+        $ionicLoading.hide();
         if (dato.valido === false) {
           $scope.estado = dato.estado;
           $scope.showAlert();
@@ -281,7 +292,7 @@ angular.module('starter.controllers', [])
 })
 */
 
-.controller('AccordionList', function($scope, $http, $state, $ionicPopup, GETservice) {
+.controller('AccordionList', function($scope, $http, $state, $ionicPopup, $ionicLoading, GETservice) {
   $scope.groups = [];
   $scope.groups[0] = {
     name: "Facultades, Escuelas y Departamentos",
@@ -327,14 +338,23 @@ angular.module('starter.controllers', [])
   $scope.getData = function(item) {
     $scope.estado = "";
     
+    $ionicLoading.show({
+      content: 'Buscando...',
+      animation: 'fade-in',
+      showBackdrop: false,
+      maxWidth: 200,
+      showDelay: 150
+    });
+
     GETservice.fetchLugar(item).then(function(dato){
       if (!dato) {
+        $ionicLoading.hide();
         $scope.estado = "No se pudo hacer la consulta a la Base de Datos. Verifica tu conexión a Internet.";
         $scope.showAlert();
         return;
       }
       else {
-        //console.log(dato.estado + " " + dato.valido);
+        $ionicLoading.hide();
         if (dato.valido === false) {
           $scope.estado = dato.estado;
           $scope.showAlert();
