@@ -41,4 +41,5 @@ Después de clonar el repositorio, ejecuta los siguientes comandos para compilar
 Contáctanos
 -----------
 
-Si te interesa la aplicación, tienes sugerencias o encontraste un fallo; puedes contactarnos a: cgl[arroba]usach[punto]cl
+Si te interesa la aplicación, tienes sugerencias o encontraste un fallo; puedes
+reportar un [issue](https://github.com/GaciX/UsachMovil/issues) o contactarnos a: cgl[arroba]usach[punto]cl
