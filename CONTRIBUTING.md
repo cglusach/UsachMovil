@@ -10,7 +10,7 @@ Cualquier error, bug o problema con la aplicación, debe ser reportada como un [
 
 ## Sobre las solicitudes de nuevas características
 
-Si se desea solicitar una nueva característica, se debe reportar como un [issue](https://github.com/GaciX/cglusach/issues), indicando con la mayor cantidad de detalles la característica a pedir. El equipo desarrollador se reserva el derecho de admitir o rechazar características dependiendo de la factibilidad técnica.
+Si se desea solicitar una nueva característica, se debe reportar como un [issue](https://github.com/cglusach/issues), indicando con la mayor cantidad de detalles la característica a pedir. El equipo desarrollador se reserva el derecho de admitir o rechazar características dependiendo de la factibilidad técnica.
 
 ## Sobre los aportes en código y los "Pull Requests"
 
@@ -29,9 +29,8 @@ Marcará al último commit con un tag de versión 1.1.0, que fue publicado el 28
 
 Sobre el número de versión, se usará el siguiente esquema para el incremento de versiones:
 
->	A.B.C
-> Donde A es el número de versión mayor (cambios del roadmap a largo plazo)
-> B es el número de versión medio (cambios del roadmap a corto plazo)
-> C es el número de versión menor (arreglos de errores y cambios menores)
+	A.B.C
+
+> Donde A es el número de versión mayor (cambios del roadmap a largo plazo), B es el número de versión medio (cambios del roadmap a corto plazo) y C es el número de versión menor (arreglos de errores y cambios menores).
 
 El incremento de versión se debe incluir en el archivo config.xml para que pueda ser visible en los Stores.
