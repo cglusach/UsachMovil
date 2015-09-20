@@ -27,7 +27,7 @@ Para compilar la aplicación se necesita un PC con las siguientes dependencias:
 * Node.js
 * Apache Cordova
 * Ionic Framework
-* Android SDK (versión 19)
+* Android SDK (versión 22)
 
 Después de clonar el repositorio, ejecuta los siguientes comandos para compilar:
 
