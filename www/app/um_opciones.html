@@ -9,17 +9,25 @@
 				<label class="item item-input item-select">
 					<div class="input-label">Semestre Actual</div>
 					<select ng-model="model.semestre">
-						<option selected>2015-01</option>
-						<option>2015-02</option>
+						<option>2015-01</option>
+						<option selected>2015-02</option>
 						<option>2016-01</option>
 						<option>2016-02</option>
+						<option>2017-01</option>
+						<option>2017-02</option>
 					</select>
 				</label>
 				<ion-toggle ng-repeat="item in settingsList" ng-model="model.gps" ng-checked="item.checked">
           			{{item.opcion}}
         		</ion-toggle>
-				<label class="item">
-					<button class="button button-block button-positive" type="submit" ng-click="getData()">Guardar</button>
+				<label class="item" type="submit">
+					<div class="button-bar">
+						<a class="button button-royal" ng-click="setDefault()">Por defecto</a>
+						<a class="button button-balanced" ng-click="getData()">Guardar</a>
+					</div>
+
+					<!--<button class="button button-block button-calm" ng-click="setDefault()">Opciones por defecto</button>
+					<button class="button button-block button-positive" type="submit" ng-click="getData()">Guardar</button>-->
 				</label>
 			</div>
 		</form>

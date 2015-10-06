@@ -292,7 +292,7 @@ angular.module('starter.controllers', [])
 })
 */
 
-.controller('AccordionList', function($scope, $http, $state, $ionicPopup, $ionicLoading, GETservice) {
+.controller('LugaresCtrl', function($scope, $http, $state, $ionicPopup, $ionicLoading, GETservice) {
   $scope.groups = [];
   $scope.groups[0] = {
     name: "Facultades, Escuelas y Departamentos",
@@ -379,21 +379,28 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('OpcionesCtrl', function($scope) {
-  // TODO
-  var url = "https://salasusach.herokuapp.com/";
-  var semestre = "2015-01";
-  var gps = true;
-
+.controller('OpcionesCtrl', function($scope, opciones, ProcesadorOpciones) {
   $scope.model = {};
   $scope.settingsList = [ { opcion: "Geolocalización", checked: true } ];
 
   $scope.getData = function() {
-    url = $scope.model.url;
-    semestre = $scope.model.semestre;
-    gps = $scope.model.gps;
+    opciones.UrlConsulta = $scope.model.url;
+    opciones.Semestre = $scope.model.semestre;
+    opciones.Geolocalizacion = $scope.model.gps;
+    opciones.ModoOnline = true;
 
-    console.log(url + " " + semestre + " " + gps);
+    ProcesadorOpciones.setOpciones(opciones);
+  }
+
+  $scope.setDefault = function() {
+    var temp = ProcesadorOpciones.getDefault();
+
+    opciones.UrlConsulta = temp.UrlConsulta;
+    opciones.Semestre = temp.Semestre;
+    opciones.Geolocalizacion = temp.Geolocalizacion;
+    opciones.ModoOnline = true;
+
+    ProcesadorOpciones.setDefault();
   }
 });
 

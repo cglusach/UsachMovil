@@ -1,6 +1,6 @@
 angular.module('starter.services', [])
 
-.factory('GETservice', function($http, $q) {
+.factory('GETservice', function($http, $q, opciones) {
 	//en teoria si resulta la recoleccion de datos, deberia de estar latitud y longitud en dato.latitud, dato.longitud
 	var lugar = {
 	  estado:'',
@@ -16,8 +16,8 @@ angular.module('starter.services', [])
 	};
 
 	//por defecto
-	var urlBase = "https://salasusach.herokuapp.com/";
-	var periodo = "2015-01";
+	var urlBase = opciones.UrlConsulta;
+	var periodo = opciones.Semestre;
 
 	return {
 			fetchLugar: function(input) {
@@ -115,4 +115,51 @@ angular.module('starter.services', [])
 				return periodo;
 			}
 	}
-});
+})
+
+.factory('$localstorage', ['$window', function($window) {
+  return {
+    set: function(key, value) {
+      $window.localStorage[key] = value;
+    },
+    get: function(key, defaultValue) {
+      return $window.localStorage[key] || defaultValue;
+    },
+    setObject: function(key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+    },
+    getObject: function(key) {
+      return JSON.parse($window.localStorage[key] || '{}');
+    }
+  }
+}])
+
+.service('ProcesadorOpciones', ['$localstorage', 'opciones', function($localstorage, opciones) {
+	return {
+		getDefault: function() {
+			return {
+			 	UrlConsulta: "https://salasusach.herokuapp.com/",
+				Semestre: "2015-02",
+				ModoOnline: false,
+				Geolocalizacion: false
+			};
+		},
+		setDefault: function() {
+			$localstorage.setObject('opciones') = this.getDefault();
+		},		
+		getOpciones: function() {
+  			if ($localstorage.getObject('opciones')) {
+  				console.log("Cargando opciones guardadas...");
+  				return $localstorage.getObject('opciones');
+  			}
+  			else {
+  				console.log("Cargando opciones por defecto...");
+  				return this.getDefault();
+  			}
+		},
+		setOpciones: function(valores) {
+			console.log("Guardando opciones...");
+			$localstorage.setObject('opciones') = valores;
+		}
+	}
+}]);

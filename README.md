@@ -34,7 +34,7 @@ Después de clonar el repositorio, ejecuta los siguientes comandos para compilar
 	$ ionic platform add android
 	$ cordova plugin add org.apache.cordova.inappbrowser
 	$ cordova plugin add org.apache.cordova.geolocation
-	$ cordova plugin add https://github.com/brodysoft/Cordova-SQLitePlugin.git
+	$ cordova plugin add cordova-sqlite-storage
 	$ ionic build android
 	$ ionic run android
 
