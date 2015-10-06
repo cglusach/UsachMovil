@@ -1,6 +1,6 @@
 angular.module('starter.services', [])
 
-.factory('GETservice', function($http, $q, opciones) {
+.factory('GETservice', function($http, $q, FactoriaOpciones) {
 	//en teoria si resulta la recoleccion de datos, deberia de estar latitud y longitud en dato.latitud, dato.longitud
 	var lugar = {
 	  estado:'',
@@ -15,16 +15,18 @@ angular.module('starter.services', [])
 	  rutaLarga: [ { latitud:'', longitud:'' } ]
 	};
 
-	//por defecto
-	var urlBase = opciones.UrlConsulta;
-	var periodo = opciones.Semestre;
-
 	return {
 			fetchLugar: function(input) {
-			  url1 = urlBase + "/lugar/buscar/" + input;
-			  url2 = urlBase + "/coordenada/buscar/" + input;
-			  url3 = urlBase + "/coordenadas/minimo/" + input;
-			  url4 = urlBase + "/coordenadas/largo/" + input;
+				console.log("UrlConsulta: " + FactoriaOpciones.getUrlConsulta());
+				console.log("SemestreConsulta: " + FactoriaOpciones.getSemestre());
+
+				//por defecto
+				var urlBase = FactoriaOpciones.getUrlConsulta();
+
+				url1 = urlBase + "/lugar/buscar/" + input;
+				url2 = urlBase + "/coordenada/buscar/" + input;
+				url3 = urlBase + "/coordenadas/minimo/" + input;
+				url4 = urlBase + "/coordenadas/largo/" + input;
 
 				var req0 = $http.get(url1);
 				var req1 = $http.get(url2);
@@ -108,10 +110,8 @@ angular.module('starter.services', [])
 		    getNombre: function() {
 				return lugar.nombre;
 			},
-			setPeriodo: function(per) {
-				periodo = per;
-			},
 			getPeriodo: function() {
+				var periodo = FactoriaOpciones.getSemestre();
 				return periodo;
 			}
 	}
@@ -134,32 +134,62 @@ angular.module('starter.services', [])
   }
 }])
 
-.service('ProcesadorOpciones', ['$localstorage', 'opciones', function($localstorage, opciones) {
+.service('ProcesadorOpciones', ['$localstorage', function($localstorage) {
 	return {
 		getDefault: function() {
 			return {
 			 	UrlConsulta: "https://salasusach.herokuapp.com/",
 				Semestre: "2015-02",
-				ModoOnline: false,
+				ModoOffline: false,
 				Geolocalizacion: false
 			};
 		},
 		setDefault: function() {
-			$localstorage.setObject('opciones') = this.getDefault();
+			$localstorage.setObject('opcionesGuardadas', this.getDefault());
 		},		
 		getOpciones: function() {
-  			if ($localstorage.getObject('opciones')) {
-  				console.log("Cargando opciones guardadas...");
-  				return $localstorage.getObject('opciones');
+  			if (angular.equals({},$localstorage.getObject('opcionesGuardadas'))) {
+  				//console.log("Cargando opciones por defecto...");
+  				return this.getDefault();
   			}
   			else {
-  				console.log("Cargando opciones por defecto...");
-  				return this.getDefault();
+  				//console.log("Cargando opciones guardadas...");
+  				return $localstorage.getObject('opcionesGuardadas');
   			}
 		},
 		setOpciones: function(valores) {
 			console.log("Guardando opciones...");
-			$localstorage.setObject('opciones') = valores;
+			$localstorage.setObject('opcionesGuardadas',valores);
+		}
+	}
+}])
+
+.factory('FactoriaOpciones', ['ProcesadorOpciones', function(ProcesadorOpciones) {
+	return {
+		getUrlConsulta: function() {
+			return ProcesadorOpciones.getOpciones().UrlConsulta;
+		},
+		getSemestre: function() {
+			return ProcesadorOpciones.getOpciones().Semestre;
+		},
+		getModoOffline: function() {
+			return ProcesadorOpciones.getOpciones().ModoOffline;
+		},
+		getGeolocalizacion: function() {
+			return ProcesadorOpciones.getOpciones().Geolocalizacion;
+		}
+	}
+}])
+
+.service('Utilidades', ['$window', function($window) {
+	return {
+		soportaAlmacenamientoHTML5: function() {
+			try {
+    			return 'localStorage' in window && window['localStorage'] !== null;
+  			}
+  			catch (e) {
+				return false;
+			}			
 		}
 	}
 }]);

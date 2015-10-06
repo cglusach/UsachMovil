@@ -6,14 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter.services'])
 
-.value('opciones', {
-  UrlConsulta: "https://salasusach.herokuapp.com/",
-  Semestre: "2015-01",
-  ModoOnline: false,
-  Geolocalizacion: false
-})
-
-.run(function($ionicPlatform, opciones, ProcesadorOpciones) {
+.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -26,7 +19,8 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
       StatusBar.styleDefault();
     }
 
-    opciones = ProcesadorOpciones.getOpciones();
+    //opciones = ProcesadorOpciones.getOpciones();
+    //console.log(opciones);
     //db = window.sqlitePlugin.openDatabase({name: "umovil.sqlite", location: 2});
   });
 })
@@ -132,5 +126,3 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
 	
 	$urlRouterProvider.otherwise('/umovil/inicio');
 });
-
-var db = null;

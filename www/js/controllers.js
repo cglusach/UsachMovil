@@ -55,7 +55,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('MostrarMapaCtrl', function($scope, $stateParams, $ionicLoading, $compile, GETservice) {
+.controller('MostrarMapaCtrl', function($scope, $stateParams, $ionicLoading, $compile, GETservice, FactoriaOpciones) {
     $scope.init = function() {
       $scope.model = GETservice.getLugar();
       $scope.model.periodo = GETservice.getPeriodo();
@@ -83,19 +83,19 @@ angular.module('starter.controllers', [])
         */
 
         // GEOLOCALIZACIÓN
-        /*
-        navigator.geolocation.getCurrentPosition(function(pos) {
-          var posicion = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-          var marker = new google.maps.Marker({
-            position: posicion,
-            map: map,
-            title: "Tu Posición Actual",
-            icon: "img/marker_youarehere.png"
+        if (FactoriaOpciones.getGeolocalizacion()===true) {
+          navigator.geolocation.getCurrentPosition(function(pos) {
+            var posicion = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+            var marker = new google.maps.Marker({
+              position: posicion,
+              map: map,
+              title: "Tu Posición Actual",
+              icon: "img/marker_youarehere.png"
+            });
+          }, function(error) {
+            alert('No se puede obtener la ubicación: ' + error.message);
           });
-        }, function(error) {
-          alert('Unable to get location: ' + error.message);
-        });
-        */
+        }
 
         var SRoute = [];
         var LRoute = [];
@@ -379,26 +379,38 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('OpcionesCtrl', function($scope, opciones, ProcesadorOpciones) {
+.controller('OpcionesCtrl', function($scope, ProcesadorOpciones, FactoriaOpciones) {
   $scope.model = {};
-  $scope.settingsList = [ { opcion: "Geolocalización", checked: true } ];
+  var temp = {};
 
   $scope.getData = function() {
-    opciones.UrlConsulta = $scope.model.url;
-    opciones.Semestre = $scope.model.semestre;
-    opciones.Geolocalizacion = $scope.model.gps;
-    opciones.ModoOnline = true;
+    // Setear URL Consulta
+    if (!$scope.model.url) {
+      temp.UrlConsulta = FactoriaOpciones.getUrlConsulta();
+    }
+    else {
+      temp.UrlConsulta = $scope.model.url;
+    }
 
-    ProcesadorOpciones.setOpciones(opciones);
+    // Setear Semestre
+    if (!$scope.model.semestre) {
+      temp.Semestre = FactoriaOpciones.getSemestre();
+    }
+    else {
+      temp.Semestre = $scope.model.semestre;
+    }
+
+    //Otros parámetros
+    temp.ModoOffline = false;
+    temp.Geolocalizacion = $scope.model.gps;
+
+    ProcesadorOpciones.setOpciones(temp);
   }
 
   $scope.setDefault = function() {
-    var temp = ProcesadorOpciones.getDefault();
+    console.log("Seteando opciones por defecto...");
 
-    opciones.UrlConsulta = temp.UrlConsulta;
-    opciones.Semestre = temp.Semestre;
-    opciones.Geolocalizacion = temp.Geolocalizacion;
-    opciones.ModoOnline = true;
+    var temp = ProcesadorOpciones.getDefault();
 
     ProcesadorOpciones.setDefault();
   }

@@ -6,9 +6,9 @@
 					<div class="input-label">Página de Salas USACH</div>
 					<input placeholder="https://salasusach.herokuapp.com/" type="text" ng-model="model.url">
 				</label>
-				<label class="item item-input item-select">
+				<label class="item item-input item-select" ng-model="model.semestre">
 					<div class="input-label">Semestre Actual</div>
-					<select ng-model="model.semestre">
+					<select>
 						<option>2015-01</option>
 						<option selected>2015-02</option>
 						<option>2016-01</option>
@@ -17,18 +17,11 @@
 						<option>2017-02</option>
 					</select>
 				</label>
-				<ion-toggle ng-repeat="item in settingsList" ng-model="model.gps" ng-checked="item.checked">
-          			{{item.opcion}}
-        		</ion-toggle>
-				<label class="item" type="submit">
-					<div class="button-bar">
-						<a class="button button-royal" ng-click="setDefault()">Por defecto</a>
-						<a class="button button-balanced" ng-click="getData()">Guardar</a>
-					</div>
-
-					<!--<button class="button button-block button-calm" ng-click="setDefault()">Opciones por defecto</button>
-					<button class="button button-block button-positive" type="submit" ng-click="getData()">Guardar</button>-->
-				</label>
+				<ion-toggle ng-model="model.gps" toggle-class="toggle-calm">Geolocalización</ion-toggle>
+				<div class="button-bar">
+					<button class="button button-royal" ng-click="setDefault()">Por defecto</a>
+					<button class="button button-balanced" ng-click="getData()">Guardar</a>
+				</div>
 			</div>
 		</form>
 	</ion-content>
