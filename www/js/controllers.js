@@ -327,6 +327,11 @@ angular.module('umovil.controllers', [])
 .controller('OpcionesCtrl', function($scope, ProcesadorOpciones, FactoriaOpciones) {
 	$scope.model = {};
 
+	$scope.listaOpciones = [
+		{ text: "Geolocalizacion", checked: FactoriaOpciones.getGeolocalizacion() }
+		//{ text: "Modo Offline", checked: FactoriaOpciones.getModoOffline() }
+	];
+
 	var temp = {};
 
 	$scope.getData = function() {
@@ -347,9 +352,9 @@ angular.module('umovil.controllers', [])
 		}
 
 		//Otros parámetros
-		temp.ModoOffline = false;
-		temp.Geolocalizacion = $scope.model.gps;
-
+		temp.Geolocalizacion = $scope.listaOpciones[0].checked;
+		temp.ModoOffline = false; //$scope.listaOpciones[1].checked;
+		
 		ProcesadorOpciones.setOpciones(temp);
 	}
 

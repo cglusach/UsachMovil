@@ -17,7 +17,9 @@
 						<option>2017-02</option>
 					</select>
 				</label>
-				<ion-toggle ng-model="model.gps" toggle-class="toggle-calm">Geolocalización</ion-toggle>
+				<ion-toggle ng-repeat="item in listaOpciones" ng-model="item.checked" ng-checked="item.checked">
+          			{{ item.text }}
+        		</ion-toggle>
 				<div class="button-bar">
 					<button class="button button-royal" ng-click="setDefault()">Por defecto</a>
 					<button class="button button-balanced" ng-click="getData()">Guardar</a>
