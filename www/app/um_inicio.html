@@ -1,23 +1,20 @@
 <ion-view title="USACH Móvil">
 	<ion-content>
 		<ion-list>
-	        <ion-item menu-close ui-sref="umovil.buscarsala">
-	          <i class="icon ion-map"></i>
-	          Buscar Salas en la USACH
+	        <ion-item ui-sref="umovil.buscarsala" menu-close>
+	        	<img src="img/umovil-salas.png" class="avatar">
+				<h2>Salas USACH</h2>
+				<p>Busca salas de clase en el campus</p>
 	        </ion-item>
-	        <ion-item menu-close ui-sref="umovil.lugares">
-	          <i class="icon ion-university"></i>
-	          Lugares de la USACH
+	        <ion-item item-type="item-avatar" ui-sref="umovil.lugares" menu-close>
+	        	<img src="img/umovil-lugares.png" class="avatar">
+	        	<h2>Lugares USACH</h2>
+				<p>Encuentra puntos de interés</p>
 	        </ion-item>
-	        <!--
-	        <ion-item menu-close ui-sref="umovil.get">
-	          <i class="icon ion-information-circled"></i>
-	          Test de Peticiones GET
-	        </ion-item>
-	        -->
-	        <ion-item menu-close ui-sref="umovil.links">
-	          <i class="icon ion-link"></i>
-	          Links Importantes de la USACH
+	        <ion-item ui-sref="umovil.links" menu-close>
+	        	<img src="img/umovil-links.png" class="avatar">
+	        	<h2>Páginas USACH</h2>
+				<p>Links y páginas web relacionadas</p>
 	        </ion-item>
         </ion-list>
 	</ion-content>

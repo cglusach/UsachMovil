@@ -49,3 +49,11 @@
 .item-select:after {
   top: 60%;
 }
+
+.avatar {
+  float: left;
+  max-height: 40px;
+  max-width: 40px;
+  margin-right: 1em;
+  border-radius: 4px;
+}
