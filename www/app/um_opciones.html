@@ -4,17 +4,11 @@
 			<div class="list">
 				<label class="item item-input item-stacked-label">
 					<div class="input-label">Página de Salas USACH</div>
-					<input placeholder="https://salasusach.herokuapp.com/" type="text" ng-model="model.url">
+					<input placeholder="https://salasusach.herokuapp.com/" type="text" ng-model="form.url">
 				</label>
-				<label class="item item-input item-select" ng-model="model.semestre">
+				<label class="item item-input item-select">
 					<div class="input-label">Semestre Actual</div>
-					<select>
-						<option>2015-01</option>
-						<option selected>2015-02</option>
-						<option>2016-01</option>
-						<option>2016-02</option>
-						<option>2017-01</option>
-						<option>2017-02</option>
+					<select ng-model="selectorSemestre.opcionEscogida" ng-options="opcion as opcion.semestre for opcion in listaSemestres track by opcion.semestre" ng-disabled="!selectorSemestre.estaPresente">
 					</select>
 				</label>
 				<ion-toggle ng-repeat="item in listaOpciones" ng-model="item.checked" ng-checked="item.checked">

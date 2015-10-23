@@ -66,9 +66,9 @@ angular.module('umovil.controllers', [])
 			center: myLatlng,
 			zoom: 17,
 			mapTypeId: google.maps.MapTypeId.HYBRID,
-			zoomControl:false,
+			zoomControl: false,
 			streetViewControl: false,
-			panControl:false
+			panControl: false
 		};
 		var map = new google.maps.Map(document.getElementById("mapa"), mapOptions);
 
@@ -324,11 +324,25 @@ angular.module('umovil.controllers', [])
 	};
 })
 
-.controller('OpcionesCtrl', function($scope, ProcesadorOpciones, FactoriaOpciones) {
-	$scope.model = {};
+.controller('OpcionesCtrl', function($scope, $ionicPopup, ProcesadorOpciones, FactoriaOpciones) {
+	$scope.form = {};
+
+	$scope.selectorSemestre = {
+		estaPresente : true,
+		opcionEscogida : {"semestre": FactoriaOpciones.getSemestre() }
+	};
+
+	$scope.listaSemestres = [
+		{semestre: "2015-01"},
+		{semestre: "2015-02"},
+		{semestre: "2016-01"},
+		{semestre: "2016-02"},
+		{semestre: "2017-01"},
+		{semestre: "2017-02"}
+	];
 
 	$scope.listaOpciones = [
-		{ text: "Geolocalizacion", checked: FactoriaOpciones.getGeolocalizacion() }
+		{ text: "Geolocalización", checked: FactoriaOpciones.getGeolocalizacion() }
 		//{ text: "Modo Offline", checked: FactoriaOpciones.getModoOffline() }
 	];
 
@@ -336,19 +350,19 @@ angular.module('umovil.controllers', [])
 
 	$scope.getData = function() {
 		// Setear URL Consulta
-		if (!$scope.model.url) {
+		if (!$scope.form.url) {
 			temp.UrlConsulta = FactoriaOpciones.getUrlConsulta();
 		}
 		else {
-			temp.UrlConsulta = $scope.model.url;
+			temp.UrlConsulta = $scope.form.url;
 		}
 
 		// Setear Semestre
-		if (!$scope.model.semestre) {
+		if (!$scope.selectorSemestre.opcionEscogida) {
 			temp.Semestre = FactoriaOpciones.getSemestre();
 		}
 		else {
-			temp.Semestre = $scope.model.semestre;
+			temp.Semestre = $scope.selectorSemestre.opcionEscogida.semestre;
 		}
 
 		//Otros parámetros
@@ -356,12 +370,21 @@ angular.module('umovil.controllers', [])
 		temp.ModoOffline = false; //$scope.listaOpciones[1].checked;
 		
 		ProcesadorOpciones.setOpciones(temp);
+		$scope.showMessage("Configuraciones guardadas con éxito");
 	}
 
 	$scope.setDefault = function() {
 		console.log("Seteando opciones por defecto...");
 		var temp = ProcesadorOpciones.getDefault();
 		ProcesadorOpciones.setDefault();
+		$scope.showMessage("Configuraciones por defecto restauradas con éxito");
 	}
+
+	$scope.showMessage = function(msg) {
+		var alertPopup = $ionicPopup.alert({
+			title: "Información",
+			template: msg
+		});
+	};
 });
 

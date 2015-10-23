@@ -140,7 +140,7 @@ angular.module('umovil.services', [])
 				UrlConsulta: "https://salasusach.herokuapp.com/",
 				Semestre: "2015-02",
 				ModoOffline: false,
-				Geolocalizacion: false
+				Geolocalizacion: true
 			};
 		},
 		setDefault: function() {
