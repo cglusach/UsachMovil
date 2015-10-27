@@ -16,8 +16,7 @@
   },
   "cordovaPlugins": [
     "org.apache.cordova.inappbrowser",
-    "org.apache.cordova.geolocation",
-    "cordova-sqlite-storage"
+    "org.apache.cordova.geolocation"
   ],
   "cordovaPlatforms": [
     "android"

@@ -133,32 +133,103 @@ angular.module('umovil.services', [])
 	}
 }])
 
-.service('ProcesadorOpciones', ['$localstorage', function($localstorage) {
+.service('LokiDatabase', ['$q', 'Loki', 'configs', function($q, Loki, configs) {
+    var database;
+    var databaseRef;
+    var adapter;
+    var optIndex;
+
+	return {
+		initDB: function() {
+			return $q(function(resolve, reject) {
+				if (window.cordova) {
+					adapter = new LokiCordovaFSAdapter({"prefix": "loki"});  
+				}
+				else {
+					adapter = new LokiIndexedAdapter('loki');
+				}
+
+	        	database = new Loki('umovil',
+	                {
+	                    autosave: true,
+	                    autosaveInterval: 1000,	// 1 segundos
+	                    adapter: adapter
+	                });
+	        	resolve(database);
+	        });
+		},
+		loadDB: function() {
+			return $q(function(resolve, reject) {
+				var parms = {
+					database: {
+						proto: Object
+					}
+				};
+
+				database.loadDatabase(parms, function () {
+					databaseRef = database.getCollection('datos');
+
+					if (!databaseRef) {
+						databaseRef = database.addCollection('datos');
+					}
+
+					var qry = databaseRef.find({'Tipo':'opciones'});
+					console.log(qry);
+					if (qry === undefined || qry.length <= 0) {
+						databaseRef.insert(configs);
+					}
+					qry = databaseRef.find({'Tipo':'opciones'});
+					optIndex = qry[0].$loki;
+					console.log(optIndex);
+
+					resolve(databaseRef);	
+				});
+
+			});
+		},
+		getCollection: function(data) {
+			return databaseRef.find({ 'Tipo': data });
+		},
+		getById: function(id) {
+			return databaseRef.get(id);
+		},
+		addCollection: function(data) {
+			databaseRef.insert(data);
+		},
+		updateCollection: function(data) {
+			databaseRef.update(data);
+		},
+		removeCollection: function(data) {
+			databaseRef.remove(data);
+		},
+		getOptionsId: function() {
+			var qry = databaseRef.find({'Tipo':'opciones'});
+			return qry[0].$loki;
+		}
+	}
+}])
+
+.service('ProcesadorOpciones', ['LokiDatabase', 'configs', function(LokiDatabase, configs) {
 	return {
 		getDefault: function() {
-			return {
-				UrlConsulta: "https://salasusach.herokuapp.com/",
-				Semestre: "2015-02",
-				ModoOffline: false,
-				Geolocalizacion: true
-			};
+			return configs;
 		},
 		setDefault: function() {
-			$localstorage.setObject('opcionesGuardadas', this.getDefault());
+			valores = configs;
+			valores.$loki = LokiDatabase.getOptionsId();
+			valores.meta = {};
+			LokiDatabase.updateCollection(valores);
+			console.log(this.getOpciones());
 		},		
 		getOpciones: function() {
-			if (angular.equals({},$localstorage.getObject('opcionesGuardadas'))) {
-				//console.log("Cargando opciones por defecto...");
-				return this.getDefault();
-			}
-			else {
-				//console.log("Cargando opciones guardadas...");
-				return $localstorage.getObject('opcionesGuardadas');
-			}
+			var obj = LokiDatabase.getById(LokiDatabase.getOptionsId());
+			//console.log(obj);
+			return obj;
 		},
 		setOpciones: function(valores) {
-			console.log("Guardando opciones...");
-			$localstorage.setObject('opcionesGuardadas',valores);
+			valores.$loki = LokiDatabase.getOptionsId();
+			valores.meta = {};
+			LokiDatabase.updateCollection(valores);
 		}
 	}
 }])

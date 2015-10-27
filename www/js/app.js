@@ -1,8 +1,17 @@
 // Ionic Starter App
 
-angular.module('umovil', ['ionic', 'ngCordova', 'umovil.controllers', 'umovil.services'])
+angular.module('umovil', ['ionic', 'ngCordova', 'lokijs', 'umovil.controllers', 'umovil.services'])
 
-.run(function($ionicPlatform) {
+.value('configs', {
+		Tipo: 'opciones',
+		UrlConsulta: "https://salasusach.herokuapp.com/",
+		Semestre: "2015-02",
+		ModoOffline: false,
+		Geolocalizacion: true
+	}
+)
+
+.run(function($ionicPlatform, LokiDatabase) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -15,9 +24,13 @@ angular.module('umovil', ['ionic', 'ngCordova', 'umovil.controllers', 'umovil.se
 			StatusBar.styleDefault();
 		}
 
-		//opciones = ProcesadorOpciones.getOpciones();
-		//console.log(opciones);
-		//db = window.sqlitePlugin.openDatabase({name: "umovil.sqlite", location: 2});
+		LokiDatabase.initDB().then(function(f) {
+			console.log("ok1");
+			LokiDatabase.loadDB().then(function(g) {
+
+				console.log("ok2");
+			});
+		});
 	});
 })
 

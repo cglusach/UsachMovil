@@ -324,7 +324,7 @@ angular.module('umovil.controllers', [])
 	};
 })
 
-.controller('OpcionesCtrl', function($scope, $ionicPopup, ProcesadorOpciones, FactoriaOpciones) {
+.controller('OpcionesCtrl', function($scope, $state, $ionicPopup, $ionicHistory, configs, ProcesadorOpciones, FactoriaOpciones) {
 	$scope.form = {};
 
 	$scope.selectorSemestre = {
@@ -338,7 +338,9 @@ angular.module('umovil.controllers', [])
 		{semestre: "2016-01"},
 		{semestre: "2016-02"},
 		{semestre: "2017-01"},
-		{semestre: "2017-02"}
+		{semestre: "2017-02"},
+		{semestre: "2018-01"},
+		{semestre: "2018-02"}
 	];
 
 	$scope.listaOpciones = [
@@ -349,6 +351,7 @@ angular.module('umovil.controllers', [])
 	var temp = {};
 
 	$scope.getData = function() {
+		temp = configs;
 		// Setear URL Consulta
 		if (!$scope.form.url) {
 			temp.UrlConsulta = FactoriaOpciones.getUrlConsulta();
@@ -384,6 +387,9 @@ angular.module('umovil.controllers', [])
 		var alertPopup = $ionicPopup.alert({
 			title: "Información",
 			template: msg
+		}).then(function() {
+			$ionicHistory.nextViewOptions({ historyRoot: 'true' });
+			$state.go('umovil.inicio');
 		});
 	};
 });
