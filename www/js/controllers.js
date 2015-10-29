@@ -6,9 +6,10 @@ angular.module('umovil.controllers', [])
 	};
 })
 
-.controller('BuscarSalaCtrl', function($scope, $http, $state, $ionicPopup, $ionicLoading, GETservice) {
+.controller('BuscarSalaCtrl', function($scope, $http, $state, $ionicPopup, $ionicLoading, GETservice, Utilidades) {
 	$scope.model = {};
 	$scope.estado = "Esperando ingreso de sala...";
+
 	$scope.getData = function() {
 		$scope.estado = "";
 
@@ -19,6 +20,8 @@ angular.module('umovil.controllers', [])
 			maxWidth: 200,
 			showDelay: 150
 		});
+
+		//Utilidades.toastCorto($scope.model.lugar);
 
 		GETservice.fetchLugar($scope.model.lugar).then(function(dato){
 			$scope.estado = "Buscando...";
@@ -89,7 +92,7 @@ angular.module('umovil.controllers', [])
 				var marker = new google.maps.Marker({
 					position: posicion,
 					map: map,
-					title: "Tu Posición Actual",
+					title: "Estás aquí",
 					icon: "img/marker_youarehere.png"
 				});
 			}, function(error) {
@@ -190,6 +193,12 @@ angular.module('umovil.controllers', [])
 	};
 
 	// google.maps.event.addDomListener(window, 'load', initialize);
+
+	/*
+	if (window.cordova) {
+		ionic.Platform.ready(initialize);	
+	}
+	*/
 
 	google.maps.LatLng.prototype.kmTo = function(a){ 
 		var e = Math, ra = e.PI/180; 

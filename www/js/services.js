@@ -1,6 +1,6 @@
 angular.module('umovil.services', [])
 
-.factory('GETservice', function($http, $q, FactoriaOpciones) {
+.factory('GETservice', function($http, $q, FactoriaOpciones, Utilidades, configs) {
 	//en teoria si resulta la recoleccion de datos, deberia de estar latitud y longitud en dato.latitud, dato.longitud
 	var lugar = {
 		estado:'',
@@ -17,8 +17,8 @@ angular.module('umovil.services', [])
 
 	return {
 		fetchLugar: function(input) {
-			console.log("UrlConsulta: " + FactoriaOpciones.getUrlConsulta());
-			console.log("SemestreConsulta: " + FactoriaOpciones.getSemestre());
+			//console.log("UrlConsulta: " + FactoriaOpciones.getUrlConsulta());
+			//console.log("SemestreConsulta: " + FactoriaOpciones.getSemestre());
 
 			var urlBase = FactoriaOpciones.getUrlConsulta();
 
@@ -99,8 +99,8 @@ angular.module('umovil.services', [])
 				return lugar;
 			}, function(err) {
 				console.error('ERR', err);
-				//alert("ERROR: No se pueden obtener los datos del lugar a buscar");
-			return null;
+				Utilidades.toastCorto("ERROR: No se pueden obtener los datos del lugar a buscar");
+				return null;
 			});
 		},
 		getLugar: function() {
@@ -134,10 +134,10 @@ angular.module('umovil.services', [])
 }])
 
 .service('LokiDatabase', ['$q', 'Loki', 'configs', function($q, Loki, configs) {
-    var database;
-    var databaseRef;
-    var adapter;
-    var optIndex;
+	var database;
+	var databaseRef;
+	var adapter;
+	var optIndex;
 
 	return {
 		initDB: function() {
@@ -149,14 +149,14 @@ angular.module('umovil.services', [])
 					adapter = new LokiIndexedAdapter('loki');
 				}
 
-	        	database = new Loki('umovil',
-	                {
-	                    autosave: true,
-	                    autosaveInterval: 1000,	// 1 segundos
-	                    adapter: adapter
-	                });
-	        	resolve(database);
-	        });
+				database = new Loki('umovil',
+					{
+						autosave: true,
+						autosaveInterval: 1000,	// 1 segundos
+						adapter: adapter
+					});
+				resolve(database);
+			});
 		},
 		loadDB: function() {
 			return $q(function(resolve, reject) {
@@ -234,24 +234,24 @@ angular.module('umovil.services', [])
 	}
 }])
 
-.factory('FactoriaOpciones', ['ProcesadorOpciones', function(ProcesadorOpciones) {
+.factory('FactoriaOpciones', ['ProcesadorOpciones', 'configs', function(ProcesadorOpciones, configs) {
 	return {
 		getUrlConsulta: function() {
-			return ProcesadorOpciones.getOpciones().UrlConsulta;
+			return configs.UrlConsulta; //ProcesadorOpciones.getOpciones().UrlConsulta;
 		},
 		getSemestre: function() {
-			return ProcesadorOpciones.getOpciones().Semestre;
+			return configs.Semestre; //ProcesadorOpciones.getOpciones().Semestre;
 		},
 		getModoOffline: function() {
-			return ProcesadorOpciones.getOpciones().ModoOffline;
+			return configs.ModoOffline; //ProcesadorOpciones.getOpciones().ModoOffline;
 		},
 		getGeolocalizacion: function() {
-			return ProcesadorOpciones.getOpciones().Geolocalizacion;
+			return configs.Geolocalizacion; //ProcesadorOpciones.getOpciones().Geolocalizacion;
 		}
 	}
 }])
 
-.service('Utilidades', ['$window', function($window) {
+.service('Utilidades', ['$window', '$cordovaToast', function($window, $cordovaToast) {
 	return {
 		soportaAlmacenamientoHTML5: function() {
 			try {
@@ -260,6 +260,21 @@ angular.module('umovil.services', [])
 			catch (e) {
 				return false;
 			}			
+		},
+		toast: function(message, duration, location) {
+			if (window.cordova) {
+				$cordovaToast.show(message, duration, location).then(function(success) {
+					console.log("Se mostró el Toast");
+				}, function (error) {
+					console.log("No se mostró el Toast porque " + error);
+				});	
+			}
+			else {
+				console.log("TOAST: " + message);
+			}
+		},
+		toastCorto: function(message) {
+			this.toast(message, 'short', 'bottom');
 		}
 	}
 }]);

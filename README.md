@@ -32,9 +32,11 @@ Para compilar la aplicación se necesita un PC con las siguientes dependencias:
 Después de clonar el repositorio, ejecuta los siguientes comandos para compilar:
 
 	$ ionic platform add android
-	$ cordova plugin add org.apache.cordova.inappbrowser
-	$ cordova plugin add org.apache.cordova.geolocation
-	$ cordova plugin add cordova-sqlite-storage
+	$ ionic plugin add org.apache.cordova.inappbrowser
+	$ ionic plugin add org.apache.cordova.geolocation
+	$ ionic plugin add cordova-plugin-whitelist
+	$ ionic plugin add cordova-plugin-file
+	$ ionic plugin add cordova-plugin-x-toast
 	$ ionic build android
 	$ ionic run android
 

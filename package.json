@@ -16,7 +16,10 @@
   },
   "cordovaPlugins": [
     "org.apache.cordova.inappbrowser",
-    "org.apache.cordova.geolocation"
+    "org.apache.cordova.geolocation",
+    "cordova-plugin-x-toast",
+    "cordova-plugin-file",
+    "cordova-plugin-whitelist"
   ],
   "cordovaPlatforms": [
     "android"

@@ -4,14 +4,14 @@ angular.module('umovil', ['ionic', 'ngCordova', 'lokijs', 'umovil.controllers', 
 
 .value('configs', {
 		Tipo: 'opciones',
-		UrlConsulta: "https://salasusach.herokuapp.com/",
+		UrlConsulta: "https://salasusach.herokuapp.com",
 		Semestre: "2015-02",
 		ModoOffline: false,
 		Geolocalizacion: true
 	}
 )
 
-.run(function($ionicPlatform, LokiDatabase) {
+.run(function($ionicPlatform, LokiDatabase, Utilidades) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -25,10 +25,9 @@ angular.module('umovil', ['ionic', 'ngCordova', 'lokijs', 'umovil.controllers', 
 		}
 
 		LokiDatabase.initDB().then(function(f) {
-			console.log("ok1");
+			Utilidades.toastCorto("DB iniciada");
 			LokiDatabase.loadDB().then(function(g) {
-
-				console.log("ok2");
+				Utilidades.toastCorto("DB cargada");
 			});
 		});
 	});
@@ -123,4 +122,10 @@ angular.module('umovil', ['ionic', 'ngCordova', 'lokijs', 'umovil.controllers', 
 	})
 
 	$urlRouterProvider.otherwise('/umovil/inicio');
-});
+})
+
+.config(['$httpProvider', function($httpProvider) {
+		$httpProvider.defaults.useXDomain = true;
+		delete $httpProvider.defaults.headers.common['X-Requested-With'];  
+	}
+]);
