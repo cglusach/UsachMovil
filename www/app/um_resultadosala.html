@@ -1,5 +1,9 @@
 <ion-view title="Mapa del Lugar" ng-controller="MostrarMapaCtrl">
-	<ion-content ng-init="init()">
-		<div id="mapa" data-tap-disabled="true"></div>
+	<ion-content>
+		<!--<div id="mapa" data-tap-disabled="true"></div>-->
+		<ui-gmap-google-map id="mapa" center="mapa.center" zoom="mapa.zoom" options="opcionesMapa" data-tap-disabled="true">
+			<ui-gmap-marker coords="marcador.coords" idkey="marcador.id"></ui-gmap-marker>
+        	<ui-gmap-polyline ng-repeat="r in rutas" path="r.path" stroke="r.stroke"></ui-gmap-polyline>
+		</ui-gmap-google-map>
 	</ion-content>
 </ion-view>

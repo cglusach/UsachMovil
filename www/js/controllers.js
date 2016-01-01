@@ -58,122 +58,56 @@ angular.module('umovil.controllers', [])
 	};
 })
 
-.controller('MostrarMapaCtrl', function($scope, $stateParams, $ionicLoading, $compile, GETservice, FactoriaOpciones) {
-	$scope.init = function() {
-		$scope.model = GETservice.getLugar();
-		$scope.model.periodo = GETservice.getPeriodo();
+.controller('MostrarMapaCtrl', function($scope, $stateParams, $cordovaGeolocation, $ionicLoading, uiGmapGoogleMapApi, GETservice, FactoriaOpciones) {
+	$scope.model = GETservice.getLugar();
+	$scope.model.periodo = GETservice.getPeriodo();
 
-		var myLatlng = new google.maps.LatLng(parseFloat($scope.model.latitud), parseFloat($scope.model.longitud));
-		var Nombre = $scope.model.nombre;
-		var mapOptions = {
-			center: myLatlng,
+	uiGmapGoogleMapApi.then(function(maps) {
+		var posicion = new google.maps.LatLng(parseFloat($scope.model.latitud), parseFloat($scope.model.longitud));
+
+		$scope.mapa = {
+			center: { latitude: parseFloat($scope.model.latitud), longitude: parseFloat($scope.model.longitud) },
 			zoom: 17,
+		};
+
+		$scope.opcionesMapa = {
 			mapTypeId: google.maps.MapTypeId.HYBRID,
 			zoomControl: false,
 			streetViewControl: false,
 			panControl: false
 		};
-		var map = new google.maps.Map(document.getElementById("mapa"), mapOptions);
 
-		//Marker + infowindow + angularjs compiled ng-click
-		/*
-		var contentString = "<div><a ng-click='clickTest()'>"+Nombre+"</a></div>";
-		var compiled = $compile(contentString)($scope);
+		$scope.marcador = {
+    		id: 0,
+	    	coords: { latitude: parseFloat($scope.model.latitud), longitude: parseFloat($scope.model.longitud) }
+	    };
 
-		var infowindow = new google.maps.InfoWindow({
-		  content: compiled[0]
-		});
-		*/
+	    $scope.rutas = [
+	    	{
+		    	id: 1,
+		    	path: obtenerRutaCorta(posicion),
+		    	stroke: {
+		    		color: '#05FF05',
+		    		opacity: 0.9,
+		    		weight: 3
+    			}
 
-		// GEOLOCALIZACIÓN
-		if (FactoriaOpciones.getGeolocalizacion()===true) {
-			navigator.geolocation.getCurrentPosition(function(pos) {
-				var posicion = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-				var marker = new google.maps.Marker({
-					position: posicion,
-					map: map,
-					title: "Estás aquí",
-					icon: "img/marker_youarehere.png"
-				});
-			}, function(error) {
-				alert('No se puede obtener la ubicación: ' + error.message);
-			});
-		}
+    		},
+    		{
+		    	id: 2,
+		    	path: obtenerRutaLarga(posicion),
+		    	stroke: {
+		    		color: '#FF0000',
+		    		opacity: 0.9,
+		    		weight: 3
+	    		}
+	    	}
+    	];
 
-		var SRoute = [];
-		var LRoute = [];
-
-		for (var i=0; i<$scope.model.rutaCorta.length; i++){
-			var lat = $scope.model.rutaCorta[i].latitud;
-			var ln = $scope.model.rutaCorta[i].longitud;
-			SRoute[SRoute.length] = new google.maps.LatLng(lat,ln);
-		}
-
-		SRoute[SRoute.length] = myLatlng;
-
-		for (var i=0; i<$scope.model.rutaLarga.length; i++){
-			var lat = $scope.model.rutaLarga[i].latitud;
-			var ln = $scope.model.rutaLarga[i].longitud;
-			LRoute[LRoute.length] = new google.maps.LatLng(lat,ln);
-		}
-
-		//Se instancia un objeto del tipo google.maps.Polyline
-		//al cual se pasa el arreglo de coordenadas.
-		var SPath = new google.maps.Polyline({
-			path: SRoute,
-			strokeColor: '#05FF05',
-			strokeOpacity: 1.0,
-			strokeWeight: 3
-		});
-
-		var LPath = new google.maps.Polyline({
-			path: LRoute,
-			strokeColor: '#FF0000',
-			strokeOpacity: 1.0,
-			strokeWeight: 3
-		});
-
-		SPath.setMap(map);
-		LPath.setMap(map);
-
-		var marker = new google.maps.Marker({
-		  position: myLatlng,
-		  map: map,
-		  title: Nombre
-		});
-
-		// Experimento para obtener las coordenadas de cada ruta
-		/*
-		console.log("RUTA CORTA " + $scope.model.nombre);
-		for (var i=0; i<$scope.model.rutaCorta.length; i++) {
-		  j = i+1;
-		  console.log(j + " " + $scope.model.rutaCorta[i].latitud + " " + $scope.model.rutaCorta[i].longitud);
-		}
-		console.log("RUTA LARGA " + $scope.model.nombre);
-		for (var i=0; i<$scope.model.rutaLarga.length; i++) {
-		  j = i+1;
-		  console.log(j + " " + $scope.model.rutaLarga[i].latitud + " " + $scope.model.rutaLarga[i].longitud);
-		}
-		*/
-
-		// Experimento para obtener las distancias y tiempos desde el metro
-		/*
-		var distanciaCorta = distanciaEnMetros(SPath);
-		var distanciaLarga = distanciaEnMetros(LPath);
-		var tiempoCorto = tiempoCaminando(distanciaCorta);
-		var tiempoLargo = tiempoCorriendo(distanciaCorta);
-		console.log("ruta " + distanciaCorta + " " + distanciaLarga);
-		console.log("tiempo " + formatearTiempo(tiempoCorto) + " " + formatearTiempo(tiempoLargo));
-		*/
-
-		$scope.model.distancia = distanciaEnMetros(SPath);
+    	$scope.model.distancia = distanciaEnMetros(new google.maps.Polyline({ path: obtenerRutaCorta(posicion) }));
 		$scope.model.tiempoCorto = tiempoCaminando($scope.model.distancia);
 		$scope.model.tiempoLargo = tiempoCorriendo($scope.model.distancia);
 
-		document.querySelector('#infoNombre').innerHTML = "<b>Nombre del Lugar:</b></br>" + $scope.model.nombre;
-		document.querySelector('#infoPiso').innerHTML = "<b>Piso:</b></br>" + $scope.model.piso;
-		document.querySelector('#infoMetro').innerHTML = "<b>Metro de Origen:</b></br>" + $scope.model.metroOrigen;
-		document.querySelector('#infoDistancia').innerHTML = "<b>Distancia:</b></br>" + $scope.model.distancia + " mt";
 		document.querySelector('#infoCamina').innerHTML = "<b>Tiempo Caminando (4 km/h):</b></br>" + formatearTiempo($scope.model.tiempoCorto);
 		document.querySelector('#infoCorre').innerHTML = "<b>Tiempo Corriendo (12 km/h):</b></br>" + formatearTiempo($scope.model.tiempoLargo);
 
@@ -182,23 +116,148 @@ angular.module('umovil.controllers', [])
 			$scope.model.enlace = "onclick=\"window.open(\'" + $scope.model.url + "\', '_system');\"";
 			document.querySelector('#infoHorario').innerHTML = "<button class='button button-block button-positive'" + $scope.model.enlace + ">Carga Horaria Sala</button>";
 		}
+    });
 
-		/*
-		google.maps.event.addListener(marker, 'click', function() {
-		  infowindow.open(map,marker);
-		});
-		*/
+	// $scope.init = function() {
+	// 	$scope.model = GETservice.getLugar();
+	// 	$scope.model.periodo = GETservice.getPeriodo();
+
+	// 	var myLatlng = new google.maps.LatLng(parseFloat($scope.model.latitud), parseFloat($scope.model.longitud));
+	// 	var Nombre = $scope.model.nombre;
+	// 	var mapOptions = {
+	// 		center: myLatlng,
+	// 		zoom: 17,
+	// 		mapTypeId: google.maps.MapTypeId.HYBRID,
+	// 		zoomControl: false,
+	// 		streetViewControl: false,
+	// 		panControl: false
+	// 	};
+	// 	var map = new google.maps.Map(document.getElementById("mapa"), mapOptions);
+
+	// 	//Marker + infowindow + angularjs compiled ng-click
+	// 	/*
+	// 	var contentString = "<div><a ng-click='clickTest()'>"+Nombre+"</a></div>";
+	// 	var compiled = $compile(contentString)($scope);
+
+	// 	var infowindow = new google.maps.InfoWindow({
+	// 	  content: compiled[0]
+	// 	});
+	// 	*/
+
+	// 	// GEOLOCALIZACIÓN
+	// 	if (FactoriaOpciones.getGeolocalizacion()===true) {
+	// 		navigator.geolocation.getCurrentPosition(function(pos) {
+	// 			var posicion = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+	// 			var marker = new google.maps.Marker({
+	// 				position: posicion,
+	// 				map: map,
+	// 				title: "Estás aquí",
+	// 				icon: "img/marker_youarehere.png"
+	// 			});
+	// 		}, function(error) {
+	// 			alert('No se puede obtener la ubicación: ' + error.message);
+	// 		});
+	// 	}
+
+	// 	var SRoute = [];
+	// 	var LRoute = [];
+
+	// 	for (var i=0; i<$scope.model.rutaCorta.length; i++){
+	// 		var lat = $scope.model.rutaCorta[i].latitud;
+	// 		var ln = $scope.model.rutaCorta[i].longitud;
+	// 		SRoute[SRoute.length] = new google.maps.LatLng(lat,ln);
+	// 	}
+
+	// 	SRoute[SRoute.length] = myLatlng;
+
+	// 	for (var i=0; i<$scope.model.rutaLarga.length; i++){
+	// 		var lat = $scope.model.rutaLarga[i].latitud;
+	// 		var ln = $scope.model.rutaLarga[i].longitud;
+	// 		LRoute[LRoute.length] = new google.maps.LatLng(lat,ln);
+	// 	}
+
+	// 	//Se instancia un objeto del tipo google.maps.Polyline
+	// 	//al cual se pasa el arreglo de coordenadas.
+	// 	var SPath = new google.maps.Polyline({
+	// 		path: SRoute,
+	// 		strokeColor: '#05FF05',
+	// 		strokeOpacity: 1.0,
+	// 		strokeWeight: 3
+	// 	});
+
+	// 	var LPath = new google.maps.Polyline({
+	// 		path: LRoute,
+	// 		strokeColor: '#FF0000',
+	// 		strokeOpacity: 1.0,
+	// 		strokeWeight: 3
+	// 	});
+
+	// 	SPath.setMap(map);
+	// 	LPath.setMap(map);
+
+	// 	var marker = new google.maps.Marker({
+	// 	  position: myLatlng,
+	// 	  map: map,
+	// 	  title: Nombre
+	// 	});
+
+	// 	// Experimento para obtener las coordenadas de cada ruta
 		
-		$scope.map = map;
-	};
+	// 	console.log("RUTA CORTA " + $scope.model.nombre);
+	// 	for (var i=0; i<$scope.model.rutaCorta.length; i++) {
+	// 	  j = i+1;
+	// 	  console.log(j + " " + $scope.model.rutaCorta[i].latitud + " " + $scope.model.rutaCorta[i].longitud);
+	// 	}
+	// 	console.log("RUTA LARGA " + $scope.model.nombre);
+	// 	for (var i=0; i<$scope.model.rutaLarga.length; i++) {
+	// 	  j = i+1;
+	// 	  console.log(j + " " + $scope.model.rutaLarga[i].latitud + " " + $scope.model.rutaLarga[i].longitud);
+	// 	}
+		
 
-	// google.maps.event.addDomListener(window, 'load', initialize);
+	// 	// Experimento para obtener las distancias y tiempos desde el metro
+	// 	/*
+	// 	var distanciaCorta = distanciaEnMetros(SPath);
+	// 	var distanciaLarga = distanciaEnMetros(LPath);
+	// 	var tiempoCorto = tiempoCaminando(distanciaCorta);
+	// 	var tiempoLargo = tiempoCorriendo(distanciaCorta);
+	// 	console.log("ruta " + distanciaCorta + " " + distanciaLarga);
+	// 	console.log("tiempo " + formatearTiempo(tiempoCorto) + " " + formatearTiempo(tiempoLargo));
+	// 	*/
 
-	/*
-	if (window.cordova) {
-		ionic.Platform.ready(initialize);	
-	}
-	*/
+	// 	$scope.model.distancia = distanciaEnMetros(SPath);
+	// 	$scope.model.tiempoCorto = tiempoCaminando($scope.model.distancia);
+	// 	$scope.model.tiempoLargo = tiempoCorriendo($scope.model.distancia);
+
+	// 	document.querySelector('#infoNombre').innerHTML = "<b>Nombre del Lugar:</b></br>" + $scope.model.nombre;
+	// 	document.querySelector('#infoPiso').innerHTML = "<b>Piso:</b></br>" + $scope.model.piso;
+	// 	document.querySelector('#infoMetro').innerHTML = "<b>Metro de Origen:</b></br>" + $scope.model.metroOrigen;
+	// 	document.querySelector('#infoDistancia').innerHTML = "<b>Distancia:</b></br>" + $scope.model.distancia + " mt";
+	// 	document.querySelector('#infoCamina').innerHTML = "<b>Tiempo Caminando (4 km/h):</b></br>" + formatearTiempo($scope.model.tiempoCorto);
+	// 	document.querySelector('#infoCorre').innerHTML = "<b>Tiempo Corriendo (12 km/h):</b></br>" + formatearTiempo($scope.model.tiempoLargo);
+
+	// 	if( !isNaN($scope.model.nombre) ) {
+	// 		$scope.model.url = "https://registro.usach.cl/registrold/salas/listarsala.php?sala=" + $scope.model.nombre + "&periodo=" + $scope.model.periodo;
+	// 		$scope.model.enlace = "onclick=\"window.open(\'" + $scope.model.url + "\', '_system');\"";
+	// 		document.querySelector('#infoHorario').innerHTML = "<button class='button button-block button-positive'" + $scope.model.enlace + ">Carga Horaria Sala</button>";
+	// 	}
+
+	// 	/*
+	// 	google.maps.event.addListener(marker, 'click', function() {
+	// 	  infowindow.open(map,marker);
+	// 	});
+	// 	*/
+		
+	// 	$scope.map = map;
+	// };
+
+	// google.maps.event.addDomListener(window, 'load', $scope.init);
+
+	// /*
+	// if (window.cordova) {
+	// 	ionic.Platform.ready(initialize);	
+	// }
+	// */
 
 	google.maps.LatLng.prototype.kmTo = function(a){ 
 		var e = Math, ra = e.PI/180; 
@@ -229,6 +288,32 @@ angular.module('umovil.controllers', [])
 	tiempoCorriendo = function(distancia) {
 		var velocidad = 3.333333333; // 12 km/h
 		return Math.round(distancia/velocidad);
+	};
+
+	obtenerRutaCorta = function(posicion) {
+		var SRoute = [];
+		
+		for (var i=0; i<$scope.model.rutaCorta.length; i++){
+			var lat = $scope.model.rutaCorta[i].latitud;
+			var ln = $scope.model.rutaCorta[i].longitud;
+			SRoute[SRoute.length] = new google.maps.LatLng(lat,ln);
+		}
+
+		SRoute[SRoute.length] = posicion;
+
+		return SRoute;
+	};
+
+	obtenerRutaLarga = function(posicion) {
+		var LRoute = [];
+
+		for (var i=0; i<$scope.model.rutaLarga.length; i++){
+			var lat = $scope.model.rutaLarga[i].latitud;
+			var ln = $scope.model.rutaLarga[i].longitud;
+			LRoute[LRoute.length] = new google.maps.LatLng(lat,ln);
+		}
+
+		return LRoute;
 	};
 
 	formatearTiempo = function(tiempo) {

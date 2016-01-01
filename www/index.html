@@ -20,6 +20,9 @@
     <script src="lib/lokijs/src/loki-angular.js"></script>
     <script src="lib/lokijs/src/loki-indexed-adapter.js"></script>
     <script src="lib/loki-cordova-fs-adapter.js"></script>
+    <script src="lib/maps/lodash.min.js"></script>
+    <script src="lib/maps/angular-simple-logger.js"></script>
+    <script src="lib/maps/angular-google-maps.min.js"></script>
     <script src="lib/ng-cordova.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
@@ -31,7 +34,10 @@
     <script src="js/services.js"></script>
 
     <!-- google maps' js -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZeruOWEJnGYDERS7s16XaxKgJwweKfxM&sensor=false"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js"></script>
+    <!--    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZeruOWEJnGYDERS7s16XaxKgJwweKfxM"></script>
+    -->
   </head>
 
 	<body ng-controller="UsachMovilCtrl" ng-app="umovil">

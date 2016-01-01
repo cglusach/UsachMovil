@@ -15,11 +15,11 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
-    "org.apache.cordova.inappbrowser",
-    "org.apache.cordova.geolocation",
     "cordova-plugin-x-toast",
     "cordova-plugin-file",
-    "cordova-plugin-whitelist"
+    "cordova-plugin-whitelist",
+    "cordova-plugin-geolocation",
+    "cordova-plugin-inappbrowser"
   ],
   "cordovaPlatforms": [
     "android"

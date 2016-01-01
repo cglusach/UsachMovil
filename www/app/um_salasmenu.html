@@ -51,7 +51,7 @@
     </ion-content>
   </ion-side-menu>
 
-  <ion-side-menu side="right">
+  <ion-side-menu side="right" ng-controller="MostrarMapaCtrl">
     <ion-header-bar class="bar-royal">
       <h1 class="title">Datos del Lugar</h1>
     </ion-header-bar>
@@ -60,14 +60,22 @@
         <!-- Datos provienen del controlador "MostrarMapaCtrl" -->
         <ion-item>
           <h2>Información:</h2>
-          <div id="infoNombre"></div>
-          <div id="infoPiso"></div>
+          <div id="infoNombre">
+            <b>Nombre del Lugar:</b></br>{{model.nombre}}
+          </div>
+          <div id="infoPiso">
+            <b>Piso:</b></br>{{model.piso}}
+          </div>
           <div id="infoHorario"></div>
         </ion-item>
         <ion-item>
           <h2>Ruta más corta:</h2>
-          <div id="infoMetro"></div>
-          <div id="infoDistancia"></div>
+          <div id="infoMetro">
+            <b>Metro de Origen:</b></br>{{model.metroOrigen}}
+          </div>
+          <div id="infoDistancia">
+            <b>Distancia:</b></br>{{model.distancia}} mt
+          </div>
           <div id="infoCamina"></div>
           <div id="infoCorre"></div>
         </ion-item>

@@ -1,6 +1,6 @@
 // Ionic Starter App
 
-angular.module('umovil', ['ionic', 'ngCordova', 'lokijs', 'umovil.controllers', 'umovil.services'])
+angular.module('umovil', ['ionic', 'ngCordova', 'lokijs', 'uiGmapgoogle-maps', 'umovil.controllers', 'umovil.services'])
 
 .value('configs', {
 		Tipo: 'opciones',
@@ -124,8 +124,18 @@ angular.module('umovil', ['ionic', 'ngCordova', 'lokijs', 'umovil.controllers', 
 	$urlRouterProvider.otherwise('/umovil/inicio');
 })
 
+/*
 .config(['$httpProvider', function($httpProvider) {
 		$httpProvider.defaults.useXDomain = true;
 		delete $httpProvider.defaults.headers.common['X-Requested-With'];  
 	}
 ]);
+*/
+
+.config(function(uiGmapGoogleMapApiProvider) {
+    uiGmapGoogleMapApiProvider.configure({
+        //key: 'AIzaSyDZeruOWEJnGYDERS7s16XaxKgJwweKfxM', // key: 'your api key',
+        v: '3.20', // defaults to latest 3.X anyhow
+        libraries: 'weather,geometry,visualization'
+    });
+})
