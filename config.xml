@@ -39,6 +39,6 @@
     <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
   </platform>
   <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
-  <allow-navigation href="http://salasusach*" />
-  <allow-navigation href="https://salasusach*" />
+  <allow-navigation href="http://salasusach*"/>
+  <allow-navigation href="https://salasusach*"/>
 </widget>

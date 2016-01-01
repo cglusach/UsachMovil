@@ -21,6 +21,7 @@ angular.module('umovil.controllers', [])
 			showDelay: 150
 		});
 
+
 		//Utilidades.toastCorto($scope.model.lugar);
 
 		GETservice.fetchLugar($scope.model.lugar).then(function(dato){
@@ -58,7 +59,7 @@ angular.module('umovil.controllers', [])
 	};
 })
 
-.controller('MostrarMapaCtrl', function($scope, $stateParams, $cordovaGeolocation, $ionicLoading, uiGmapGoogleMapApi, GETservice, FactoriaOpciones) {
+.controller('MostrarMapaCtrl', function($scope, $stateParams, $cordovaGeolocation, $ionicLoading, uiGmapGoogleMapApi, GETservice, FactoriaOpciones, Utilidades) {
 	$scope.model = GETservice.getLugar();
 	$scope.model.periodo = GETservice.getPeriodo();
 
@@ -103,6 +104,24 @@ angular.module('umovil.controllers', [])
 	    		}
 	    	}
     	];
+
+    	//Utilidades.toastCorto(FactoriaOpciones.getGeolocalizacion());
+
+    	if (FactoriaOpciones.getGeolocalizacion()===true) {
+			var posOptions = { timeout: 10000, enableHighAccuracy: false };
+			$cordovaGeolocation.getCurrentPosition(posOptions).then(function(pos) {
+				var lonActual = pos.coords.longitude;
+				var latActual = pos.coords.latitude;
+			
+		   		$scope.geoLoc = {
+		    		id: 3,
+			    	coords: { latitude: parseFloat(latActual), longitude: parseFloat(lonActual) },
+			    	options: { visible: FactoriaOpciones.getGeolocalizacion(), icon: 'img/marker_youarehere.png' }
+				};
+			}, function(error) {
+	 			Utilidades.popup('No se puede obtener la ubicación: ' + error.message);
+	 		});
+		}
 
     	$scope.model.distancia = distanciaEnMetros(new google.maps.Polyline({ path: obtenerRutaCorta(posicion) }));
 		$scope.model.tiempoCorto = tiempoCaminando($scope.model.distancia);

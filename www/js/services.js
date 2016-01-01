@@ -251,7 +251,7 @@ angular.module('umovil.services', [])
 	}
 }])
 
-.service('Utilidades', ['$window', '$cordovaToast', function($window, $cordovaToast) {
+.service('Utilidades', ['$window', '$cordovaToast', '$ionicPopup', function($window, $cordovaToast, $ionicPopup) {
 	return {
 		soportaAlmacenamientoHTML5: function() {
 			try {
@@ -275,6 +275,12 @@ angular.module('umovil.services', [])
 		},
 		toastCorto: function(message) {
 			this.toast(message, 'short', 'bottom');
+		},
+		popup: function(message) {
+			var alertPopup = $ionicPopup.alert({
+				title: "Información",
+				template: message
+			});
 		}
 	}
 }]);
