@@ -27,16 +27,14 @@ Para compilar la aplicación se necesita un PC con las siguientes dependencias:
 * Node.js
 * Apache Cordova
 * Ionic Framework
-* Android SDK (versión 22)
+* Android SDK (versión 19)
 
 Después de clonar el repositorio, ejecuta los siguientes comandos para compilar:
 
 	$ ionic platform add android
-	$ ionic plugin add org.apache.cordova.inappbrowser
-	$ ionic plugin add org.apache.cordova.geolocation
-	$ ionic plugin add cordova-plugin-whitelist
-	$ ionic plugin add cordova-plugin-file
-	$ ionic plugin add cordova-plugin-x-toast
+	$ cordova plugin add org.apache.cordova.inappbrowser
+	$ cordova plugin add org.apache.cordova.geolocation
+	$ cordova plugin add https://github.com/brodysoft/Cordova-SQLitePlugin.git
 	$ ionic build android
 	$ ionic run android
 

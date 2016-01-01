@@ -14,14 +14,5 @@
     "gulp-util": "^2.2.14",
     "shelljs": "^0.3.0"
   },
-  "cordovaPlugins": [
-    "org.apache.cordova.inappbrowser",
-    "org.apache.cordova.geolocation",
-    "cordova-plugin-x-toast",
-    "cordova-plugin-file",
-    "cordova-plugin-whitelist"
-  ],
-  "cordovaPlatforms": [
-    "android"
-  ]
+  "cordovaPlugins": []
 }
